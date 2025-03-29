@@ -1,0 +1,38 @@
+Frontend:
+  impl: PimTrace
+  clock_ratio: 8
+  num_expected_insts: 300000
+  path: pim_inst_new.trace
+  PimCodeGen:
+    impl: FimDRAM
+    alloc_method: row_duplicate
+    bank_buffer: true
+    sim_timesteps: 0
+    single_bank_opt: true
+              
+MemorySystem:
+  impl: PimDRAM
+  clock_ratio: 3
+
+  DRAM:
+    impl: HBM3_PIM
+    org:
+      preset: HBM3_8Gb
+      channel: 16
+      rank: 2
+      pe_per_bankgroup: 2
+      reg_per_pe: 1
+      pe_bits: 16
+    timing:
+      preset: HBM3_2Gbps 
+
+  Controller:
+    impl: PIM
+    Scheduler:
+      impl: FRFCFS
+    RefreshManager:
+      impl: AllBank
+    plugins:
+
+  AddrMapper:
+    impl: ChRaBaRoCo

@@ -1,0 +1,15 @@
+conv2d
+Problem: 1,128,112,112,64,3,3
+DilationStride: 1,1,1,1
+Loop: N,K,P,Q,C,R,S,N,K,P,Q,C,R,S,N,K,R,S,P,Q,C
+Bound: 1,32,1,1,1,1,1,1,1,1,56,64,1,1,1,4,3,3,112,2,1
+Tag: P,P,P,P,P,P,P,T,T,T,T,T,T,T,P,P,P,P,P,P,P
+StartBankRow: 0,0
+Coeff_N2,N0,N1: 1,1,1
+Coeff_K2,K0,K1: 4,1,1
+Coeff_P2,P0,P1: 112,1,1
+Coeff_Q2,Q0,Q1: 112,1,56
+Coeff_C2,C0,C1: 64,1,64
+Coeff_R2,R0,R1: 3,1,1
+Coeff_S2,S0,S1: 3,1,1
+end

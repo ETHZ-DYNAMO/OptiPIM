@@ -1,0 +1,12 @@
+{
+    "dataWidth" : 16,
+    "numRow" : 8192,
+    "numCol"  : 8192,
+    "PEBandWidth" : 256,
+    "SysBandWidth": 256,
+    "mulLat" : 48411,
+    "addLat" : 2187,
+    "rowAct" : 27,
+    "interColTransLat" : 5,
+    "interPETransLat" : 15
+}

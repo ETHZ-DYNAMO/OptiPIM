@@ -1,0 +1,8 @@
+{
+    "accTolerance": 0.02,
+    "colMulWeight": 1.0,
+    "colAddWeight": 1.0,
+    "outTransWeight": 1.0,
+    "inLoadingWeight": 1.0,
+    "interOpTransWeight": 15.0
+}

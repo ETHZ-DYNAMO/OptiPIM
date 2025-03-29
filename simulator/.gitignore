@@ -1,0 +1,7 @@
+build/
+debug/
+.vscode
+ext/
+ramulator2
+*.so
+debug.txt
