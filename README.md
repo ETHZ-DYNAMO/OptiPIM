@@ -15,6 +15,8 @@
 
 Welcome to the **OptiPIM** artifact evaluation repository! This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and reproducing the figures (Figures 9, 10, 14, and 15) from our paper. The process is fully automated using the provided `Makefile`.
 
+> [!NOTE]
+> We are slowly changing the name from pim-opt to optipim.
 ---
 
 ## 1. Prerequisites
