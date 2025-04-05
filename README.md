@@ -112,6 +112,9 @@ make compile_optipim
 2. Build the main OptiPIM executable and libraries.
 3. Create a `build/` directory containing the build artifacts.
 
+> [!WARNING]
+> Please make sure that there is no `#` in any of the folders in your path, as CMake does not allow `#` to appear in the compilation paths
+
 ---
 
 ## 3. Generating Figures from the Paper
