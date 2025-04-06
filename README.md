@@ -175,7 +175,7 @@ make fig15
 2. Moves back and calls `fig15.sh`, which finalizes the figure.
 3. Produces `fig15.pdf` under `exp_results/fig15/`.
 
-> **Note**: A pre-extracted results file (`exp_results/fig15/all_layer_results.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig15/all_layer_results_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line14** in [llm.py](./holistic/llm.py) to `all_layer_results.json` and then run `bash fig15.sh`.
+> **Note**: A pre-extracted results file (`exp_results/fig15/all_layer_llama.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig15/all_layer_llama_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line14** in [llm.py](./holistic/llm.py) to `all_layer_results.json` and then run `bash fig15.sh`.
 
 ---
 
