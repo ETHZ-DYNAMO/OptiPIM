@@ -244,6 +244,10 @@ def cal_performance_FC(arch_info, loop_bounds, device_type):
     ## Multiply all transformed loop bounds at level 2
     for x in range(0, NUM_BOUND_FC):
         num_PE_Sys *= loop_bounds[x][2]
+    
+    num_channel_Sys = int((num_PE_Sys - 1) // 16 + 1)
+
+    ChannelBandWidth = arch_info.SysBandWidth * num_channel_Sys
         
     op_performance.numPESys = num_PE_Sys
         
@@ -296,7 +300,7 @@ def cal_performance_FC(arch_info, loop_bounds, device_type):
         op_performance.numOutSys = op_performance.numPESys * op_performance.numOutCol
     
     ## Calculate the corresponding output transmission cost
-    op_performance.outTransCost = (float)(op_performance.numOutSys * arch_info.dataWidth) / (float)(arch_info.SysBandWidth)
+    op_performance.outTransCost = (float)(op_performance.numOutSys * arch_info.dataWidth) / (float)(ChannelBandWidth)
     
     # Calculate the number of inputs per PE
     op_performance.numInPE = op_performance.numInCol * op_performance.numColPE
@@ -305,7 +309,7 @@ def cal_performance_FC(arch_info, loop_bounds, device_type):
     op_performance.numInSys = op_performance.numInPE * op_performance.numPESys
     
     ## Calculate the corresponding input loading cost
-    op_performance.inLoadingCost = (float)(op_performance.numInSys * arch_info.dataWidth) / (float)(arch_info.SysBandWidth)
+    op_performance.inLoadingCost = (float)(op_performance.numInSys * arch_info.dataWidth) / (float)(ChannelBandWidth)
     
     # If the target is HBM-PIM
     if (device_type == 1):
@@ -376,6 +380,10 @@ def cal_performance_conv2D(arch_info, loop_bounds, trans_coeffs, stride, dilatio
         num_PE_Sys *= loop_bounds[x][2]
         
     op_performance.numPESys = num_PE_Sys
+
+    num_channel_Sys = int((num_PE_Sys - 1) // 16 + 1)
+    # print("haha", num_channel_Sys)
+    ChannelBandWidth = arch_info.SysBandWidth * num_channel_Sys
         
     # Calculate the number of outputs per column
     # NumOutCol = N * P * Q * K at loop level 0
@@ -438,7 +446,7 @@ def cal_performance_conv2D(arch_info, loop_bounds, trans_coeffs, stride, dilatio
         op_performance.numOutSys = op_performance.numPESys * op_performance.numOutCol
     
     ## Calculate the corresponding output transmission cost
-    op_performance.outTransCost = (float)(op_performance.numOutSys * arch_info.dataWidth) / (float)(arch_info.SysBandWidth)
+    op_performance.outTransCost = (float)(op_performance.numOutSys * arch_info.dataWidth) / (float)(ChannelBandWidth)
     
     # Calculate the number of inputs per PE
     op_performance.numInPE = op_performance.numInCol * op_performance.numColPE
@@ -447,11 +455,14 @@ def cal_performance_conv2D(arch_info, loop_bounds, trans_coeffs, stride, dilatio
     op_performance.numInSys = op_performance.numInPE * op_performance.numPESys
     
     ## Calculate the corresponding input loading cost
-    op_performance.inLoadingCost = (float)(op_performance.numInSys * arch_info.dataWidth) / (float)(arch_info.SysBandWidth)
+    op_performance.inLoadingCost = (float)(op_performance.numInSys * arch_info.dataWidth) / (float)(ChannelBandWidth)
+    op_performance.inLoadingCost += op_performance.numInCol * arch_info.rowAct
     
     # If the target is HBM-PIM
     if (device_type == 1):
-        filPELoading = op_performance.numColPE * op_performance.numFilCol
+        # zmac: Filter can be loaded multiple times
+        # filPELoading = op_performance.numColPE * op_performance.numFilCol
+        filPELoading = op_performance.numColPE * op_performance.numMulCol
         filPELoading *= (float)(arch_info.dataWidth) / (float)(arch_info.PEBandWidth)
         op_performance.numFilPELoading = filPELoading
     
@@ -465,7 +476,9 @@ def cal_performance_conv2D(arch_info, loop_bounds, trans_coeffs, stride, dilatio
         op_performance.finalPerformance = final_performance
     elif (device_type == 1) :
         final_performance = op_performance.inLoadingCost
-        final_performance += op_performance.numFilCol * arch_info.rowAct
+        # zmac: Filter can be loaded multiple times
+        # final_performance += op_performance.numFilCol * arch_info.rowAct
+        final_performance += op_performance.numMulCol * arch_info.rowAct
         final_performance += op_performance.numFilPELoading
         final_performance += op_performance.outTransCost
         op_performance.finalPerformance = final_performance
