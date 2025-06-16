@@ -132,7 +132,7 @@ This command invokes `test.sh`, which runs a brief sanity check on the OptiPIM s
 
 ## 4. Generating Figures from the Paper
 
-> **Note on Experiment Duration**: Some of these experiments can take a very long time to complete (especially for Figures 9, and 14). To help mitigate this, we have provided **pre-parsed results** in both CSV and JSON formats. If you prefer not to wait for the full experiments to finish, you may run them partially or skip them altogether and compare your partial outputs against these provided results. This approach ensures you can still reproduce and examine the final figures and trends without incurring the full runtime cost.
+> **Note on Experiment Duration**: Some of these experiments can take a very long time to complete. To help mitigate this, we have provided **pre-parsed results** in both CSV and JSON formats. If you prefer not to wait for the full experiments to finish, you may run them partially or skip them altogether and compare your partial outputs against these provided results. This approach ensures you can still reproduce and examine the final figures and trends without incurring the full runtime cost.
 
 Each key figure (9, 10, 14, and 15) has a dedicated Makefile target to automate the entire process. Running these will produce the corresponding PDF in the `exp_results/<figure>` directory.
 
@@ -151,51 +151,11 @@ make fig9
 
 > **Note**: We have provided pre-extracted data files (`validation_hbmpim.csv` and `validation_simdram.csv`) in `exp_results/fig9` for convenience. If you simply want to view the final validation figure without re-running the entire experiment, you can execute the plotting script (`validation/correlation_2.py`) directly. However, please be aware that running `make fig9` from scratch will overwrite these pre-extracted files.
 
-
-### 4.2 Figure 10
-```bash
-make fig10
-```
-1. Enters `experiments_scripts/gen_testcases/` to run `create_new_testcases.py`.
-2. Moves to `experiments_scripts/Fig_10/` to run:
-    - `run_exp.py` to execute the experiments.
-    - `draw.py` to generate the plot.
-3. Produces `fig10.pdf` under `exp_results/fig10/`.
-
-> [!WARNING]
-> **Note**: If some bars are missing in the generated figure, please rerun `make fig10`. High level of parallelization can cause certain processes to fail or remain idle for too long—especially with newer Gurobi releases, which may terminate idle runs. Our scripts will automatically detect any unfinished jobs and retry them.
-
-
-### 4.3 Figure 14
-```bash
-make fig14
-```
-1. Enters `experiments_scripts/Fig_14/` to:
-    - Run `gen_mlir_files.sh` to generate MLIR files.
-    - Run `run_exp.py` to execute the experiments on those MLIR files.
-2. Moves back and calls `fig14.sh`, which finalizes the figure.
-3. Produces `fig14.pdf` under `exp_results/fig14/`.
-
-> **Note**: A pre-extracted results file (`exp_results/fig14/all_layer_results.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig14/all_layer_results_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line 15** in [holistic.py](./holistic/holistic.py) to `all_layer_results.json` and then run `bash fig14.sh`.
-
-### 4.4 Figure 15
-```bash
-make fig15
-```
-1. Enters `experiments_scripts/Fig_15/` to:
-    - Run `gen_mlir_files.sh` to generate desired MLIR files.
-    - Run `run_exp.py` to execute the experiments on those MLIR files.
-2. Moves back and calls `fig15.sh`, which finalizes the figure.
-3. Produces `fig15.pdf` under `exp_results/fig15/`.
-
-> **Note**: A pre-extracted results file (`exp_results/fig15/all_layer_llama.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig15/all_layer_llama_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line14** in [llm.py](./holistic/llm.py) to `all_layer_results.json` and then run `bash fig15.sh`.
-
-
 ---
 
 ## 6. Contact and Support
 
-If you encounter any issues or have questions, or want to use a large server to run the experiments, please contact us!
+If you encounter any issues or have questions, please contact us!
 We hope this artifact evaluation package helps you reproduce our results smoothly and provides a clear pathway to experimenting with OptiPIM!
 
 ---
