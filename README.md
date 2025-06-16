@@ -110,6 +110,7 @@ make compile_optipim
 ```
 1. Clone and build the LLVM project.
 2. Build the main OptiPIM executable and libraries.
+3. Build the cycle-accurate simulator.
 3. Create a `build/` directory containing the build artifacts.
 
 > [!WARNING]
@@ -117,7 +118,19 @@ make compile_optipim
 
 ---
 
-## 3. Generating Figures from the Paper
+## 3. Sample Test of OptiPIM
+To verify your installation and that everything is working correctly, you can run:
+```bash
+make test
+```
+This command invokes `test.sh`, which runs a brief sanity check on the OptiPIM setup. It will:
+  1. Use preconfigured test inputs.
+  2. Show how the tool processes them.
+  3. Provide any debug or informational logs indicating success or any failures.
+
+---
+
+## 4. Generating Figures from the Paper
 
 > **Note on Experiment Duration**: Some of these experiments can take a very long time to complete (especially for Figures 9, and 14). To help mitigate this, we have provided **pre-parsed results** in both CSV and JSON formats. If you prefer not to wait for the full experiments to finish, you may run them partially or skip them altogether and compare your partial outputs against these provided results. This approach ensures you can still reproduce and examine the final figures and trends without incurring the full runtime cost.
 
@@ -126,7 +139,7 @@ Each key figure (9, 10, 14, and 15) has a dedicated Makefile target to automate 
 > [!NOTE]
 > The figures you generate may look slightly different from those in the paper. For **Figure 9**, we use a large number of randomly generated design points to verify the analytical model, leading to some run-to-run variation. For the other figures, we employ multi-threading to handle different design points in parallel, which can introduce minor discrepancies in the final results. Despite these differences, the overall trends remain consistent with those reported in the paper.
 
-### 3.1 Figure 9
+### 4.1 Figure 9
 ```bash
 make fig9
 ```
@@ -139,7 +152,7 @@ make fig9
 > **Note**: We have provided pre-extracted data files (`validation_hbmpim.csv` and `validation_simdram.csv`) in `exp_results/fig9` for convenience. If you simply want to view the final validation figure without re-running the entire experiment, you can execute the plotting script (`validation/correlation_2.py`) directly. However, please be aware that running `make fig9` from scratch will overwrite these pre-extracted files.
 
 
-### 3.2 Figure 10
+### 4.2 Figure 10
 ```bash
 make fig10
 ```
@@ -153,7 +166,7 @@ make fig10
 > **Note**: If some bars are missing in the generated figure, please rerun `make fig10`. High level of parallelization can cause certain processes to fail or remain idle for too long—especially with newer Gurobi releases, which may terminate idle runs. Our scripts will automatically detect any unfinished jobs and retry them.
 
 
-### 3.3 Figure 14
+### 4.3 Figure 14
 ```bash
 make fig14
 ```
@@ -165,7 +178,7 @@ make fig14
 
 > **Note**: A pre-extracted results file (`exp_results/fig14/all_layer_results.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig14/all_layer_results_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line 15** in [holistic.py](./holistic/holistic.py) to `all_layer_results.json` and then run `bash fig14.sh`.
 
-### 3.4 Figure 15
+### 4.4 Figure 15
 ```bash
 make fig15
 ```
@@ -177,23 +190,10 @@ make fig15
 
 > **Note**: A pre-extracted results file (`exp_results/fig15/all_layer_llama.json`) is provided for convenience. Any newly reproduced results will be stored in `exp_results/fig15/all_layer_llama_ae.json`. If you only want to generate the final figure without re-running the full experiment, you can modify **line14** in [llm.py](./holistic/llm.py) to `all_layer_results.json` and then run `bash fig15.sh`.
 
----
-
-## 4. Sample Test of OptiPIM
-To verify your installation and that everything is working correctly, you can run:
-```bash
-make test
-```
-This command invokes `test.sh`, which runs a brief sanity check on the OptiPIM setup. It will:
-  1. Use preconfigured test inputs.
-  2. Show how the tool processes them.
-  3. Provide any debug or informational logs indicating success or any failures.
-
-> **Note**: The test run is a minimal example to ensure the core functionalities are in place. For full experiments as used in the paper, please generate the figures as described above.
 
 ---
 
-## 5. Contact and Support
+## 6. Contact and Support
 
 If you encounter any issues or have questions, or want to use a large server to run the experiments, please contact us!
 We hope this artifact evaluation package helps you reproduce our results smoothly and provides a clear pathway to experimenting with OptiPIM!

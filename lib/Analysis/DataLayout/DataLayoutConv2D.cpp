@@ -80,7 +80,6 @@ GRBLinExpr DataLayoutMILP::constructConv2DMILP(const OperatorInfo& selOpInstance
         addFilPELoadingVarConv2D(selOpIndex);
     }
 
-
     //
     // Step 3: Add all related constraints
     //
@@ -115,10 +114,12 @@ GRBLinExpr DataLayoutMILP::constructConv2DMILP(const OperatorInfo& selOpInstance
             outputExpr += (opVariablesMap[selOpIndex].numRedCol * archInfo.addLat) * objKnobs.colAddWeight;
             
             // Cost 3: Get the output transmission cost
-            outputExpr += opVariablesMap[selOpIndex].numOutSys * objKnobs.outTransWeight;
+            outputExpr += opVariablesMap[selOpIndex].finalOutCostVar * objKnobs.outTransWeight;
+            // outputExpr += opVariablesMap[selOpIndex].numOutSys * objKnobs.outTransWeight;
 
             // Cost 4: Get the input loading cost
-            outputExpr += opVariablesMap[selOpIndex].numInSys * objKnobs.inLoadingWeight;
+            outputExpr += opVariablesMap[selOpIndex].finalInCostVar * objKnobs.inLoadingWeight;
+            // outputExpr += opVariablesMap[selOpIndex].numInSys * objKnobs.inLoadingWeight;
         } else if (selObjMethod == 1) {
             // COSA's COST Function
             // Cost 1: Get the col multiplication cost
@@ -132,16 +133,18 @@ GRBLinExpr DataLayoutMILP::constructConv2DMILP(const OperatorInfo& selOpInstance
         // Check the intended cost function
         if (selObjMethod == 0) {
             // Cost 1: Get the input loading cost
-            outputExpr += opVariablesMap[selOpIndex].numInSys * objKnobs.inLoadingWeight;
+            outputExpr += opVariablesMap[selOpIndex].finalInCostVar * objKnobs.inLoadingWeight;
+            // outputExpr += opVariablesMap[selOpIndex].numInSys * objKnobs.inLoadingWeight;
 
             // Cost 2: Computation Row Activation Cost
-            outputExpr += opVariablesMap[selOpIndex].numFilCol * archInfo.rowAct * objKnobs.colMulWeight;
+            outputExpr += opVariablesMap[selOpIndex].numMulCol * archInfo.rowAct * objKnobs.colMulWeight;
 
             // Cost 3: Bank Filter loading cost
             outputExpr += opVariablesMap[selOpIndex].numFilPELoading * objKnobs.colAddWeight;
 
             // Cost 4: Get the output transmission cost
-            outputExpr += opVariablesMap[selOpIndex].numOutSys * objKnobs.outTransWeight;
+            outputExpr += opVariablesMap[selOpIndex].finalOutCostVar * objKnobs.outTransWeight;
+            // outputExpr += opVariablesMap[selOpIndex].numOutSys * objKnobs.outTransWeight;
         } else if (selObjMethod == 1) {
             // COSA's cost function
             // Cost 2: Computation Row Activation Cost
@@ -452,6 +455,9 @@ void DataLayoutMILP::addNumPESysVarConv2D(const int32_t& selOpIdx) {
     // Define the final variable
     GRBVar finalNumPESysVar = model.addVar(1, maxValue, 0.0, GRB_INTEGER, "num_PE_Sys_Var");
 
+    // Set the lower bound to 1, as we need at least one PE
+    finalNumPESysVar.set(GRB_DoubleAttr_LB, 1);
+
     // To calculate the number of multiplications in a col
     // We need to multiply all the loop bounds at level 2
     
@@ -490,8 +496,24 @@ void DataLayoutMILP::addNumPESysVarConv2D(const int32_t& selOpIdx) {
     GRBVar tmpLoopBound6 = tmpOpVars.loopBoundsVars[loopBoundIdxConv2D::S].loopBoundIntVars[loopLevelIdx::LEVEL2];
     model.addQConstr(finalNumPESysVar == tmpMul4 * tmpLoopBound6, "[Op_" + std::to_string(selOpIdx) + "] num_PE_Sys_Var_cons");
 
+    // Calculate the needed bandwidth
+    // Calculate the number of Channels in the system
+    GRBVar numChannelsSysVar = model.addVar(1, maxValue, 0.0, GRB_INTEGER, "num_Channels_Sys_Var");
+    // model.addConstr(finalNumPESysVar == 16 * numChannelsSysVar - 15, "[Op_" + std::to_string(selOpIdx) + "] num_PE_Sys_Var_Channels_constraint");
+    model.addConstr(finalNumPESysVar >= 16 * numChannelsSysVar - 15, "[Op] numChan_lower");
+    model.addConstr(finalNumPESysVar <= 16 * numChannelsSysVar, "[Op] numChan_upper");
+
+    // Set the lower bound to 1, as we need at least one channel
+    numChannelsSysVar.set(GRB_DoubleAttr_LB, 1);
+
+    // Calculate the channel bandwidth
+    GRBVar channelBandwidthVar = model.addVar(1, maxValue, 0.0, GRB_INTEGER, "channel_Bandwidth_Var");
+    model.addConstr(channelBandwidthVar == numChannelsSysVar * archInfo.SysBandWidth, "[Op_" + std::to_string(selOpIdx) + "] channel_Bandwidth_Var_constraint");
+
     // Store the variable
     tmpOpVars.numPESys = finalNumPESysVar;
+    tmpOpVars.numChannelsSys = numChannelsSysVar;
+    tmpOpVars.channelLevelBandwidth = channelBandwidthVar;
 
     // Update the model before returning so that these variables can be referenced
     // safely during the rest of model creation
@@ -907,6 +929,7 @@ void DataLayoutMILP::addNumOutSysVarConv2D(const int32_t& selOpIdx) {
 
     // Define the final variable
     GRBVar finalNumOutSysVar = model.addVar(0, maxValue * maxValue, 0.0, GRB_CONTINUOUS, "num_Out_Sys_Var");
+    GRBVar finalOutCostVar = model.addVar(0, maxValue * maxValue, 0.0, GRB_CONTINUOUS, "Out_Cost_Sys_Var");
 
     // Get the desired variables
     GRBVar numPESys = tmpOpVars.numPESys;
@@ -920,14 +943,19 @@ void DataLayoutMILP::addNumOutSysVarConv2D(const int32_t& selOpIdx) {
     // Get the final variable
     // Check the device type
     if (selDeviceType == deviceTypeIdx::PUM) {
-        model.addQConstr(finalNumOutSysVar == numPESys * numOutPE * tmpConstant, "num_Out_Sys_Var_constraint");
+        model.addQConstr(finalNumOutSysVar == numPESys * numOutPE, "num_Out_Sys_Var_constraint");
+        // model.addQConstr(finalNumOutSysVar == numPESys * numOutPE * tmpConstant, "num_Out_Sys_Var_constraint");
     } else if (selDeviceType == deviceTypeIdx::PNM) {
-        model.addQConstr(finalNumOutSysVar == numPESys * numOutCol * tmpConstant, "num_Out_Sys_Var_constraint");
+        model.addQConstr(finalNumOutSysVar == numPESys * numOutCol, "num_Out_Sys_Var_constraint");
+        // model.addQConstr(finalNumOutSysVar == numPESys * numOutCol * tmpConstant, "num_Out_Sys_Var_constraint");
     }
-    
+
+    // Get the real cost of output transmission
+    model.addQConstr(finalOutCostVar * tmpOpVars.channelLevelBandwidth == finalNumOutSysVar * archInfo.dataWidth, "Out_Cost_Sys_Var_constraint");
 
     // Store the variable
     tmpOpVars.numOutSys = finalNumOutSysVar;
+    tmpOpVars.finalOutCostVar = finalOutCostVar;
 
     // Update the model before returning so that these variables can be referenced
     // safely during the rest of model creation
@@ -974,6 +1002,8 @@ void DataLayoutMILP::addNumInSysVarConv2D(const int32_t& selOpIdx) {
 
     // Define the final variable
     GRBVar finalNumInSysVar = model.addVar(0, maxValue * maxValue, 0.0, GRB_CONTINUOUS, "num_In_Sys_Var");
+    GRBVar tmpInCostVar = model.addVar(0, maxValue * maxValue, 0.0, GRB_CONTINUOUS, "tmp_In_Cost_Sys_Var");
+    GRBVar finalInCostVar = model.addVar(0, maxValue * maxValue, 0.0, GRB_CONTINUOUS, "In_Cost_Sys_Var");
 
     // Get the desired variables
     GRBVar numPESys = tmpOpVars.numPESys;
@@ -984,10 +1014,14 @@ void DataLayoutMILP::addNumInSysVarConv2D(const int32_t& selOpIdx) {
     double_t tmpConstant = tmpBandWidth * archInfo.dataWidth;
 
     // Get the final variable
-    model.addQConstr(finalNumInSysVar == numPESys * numInPE * tmpConstant, "num_In_Sys_Var_constraint");
+    model.addQConstr(finalNumInSysVar == numPESys * numInPE, "num_In_Sys_Var_constraint");
+    // model.addQConstr(finalNumInSysVar == numPESys * numInPE * tmpConstant, "num_In_Sys_Var_constraint");
+    model.addQConstr(tmpInCostVar * tmpOpVars.channelLevelBandwidth == finalNumInSysVar * archInfo.dataWidth, "tmp_In_Cost_Sys_Var_constraint");
+    model.addConstr(finalInCostVar == tmpInCostVar + (tmpOpVars.numInCol * archInfo.rowAct), "In_Cost_Sys_Var_final_constraint");
 
     // Store the variable
     tmpOpVars.numInSys = finalNumInSysVar;
+    tmpOpVars.finalInCostVar = finalInCostVar;
 
     // Update the model before returning so that these variables can be referenced
     // safely during the rest of model creation
@@ -1010,13 +1044,15 @@ void DataLayoutMILP::addFilPELoadingVarConv2D(const int32_t& selOpIdx) {
     // Get the desired variables
     GRBVar numColPE = tmpOpVars.numColPE;
     GRBVar numFilCol = tmpOpVars.numFilCol;
+    GRBVar numMulCol = tmpOpVars.numMulCol;
 
     // Get the bandwidth
     double_t tmpBandWidth = 1.0 / static_cast<double_t>(archInfo.PEBandWidth);
     double_t tmpConstant = tmpBandWidth * archInfo.dataWidth;
 
     // Get the final variable
-    model.addQConstr(finalFilPELoadingVar == numColPE * numFilCol * tmpConstant, "num_Fil_Loading_Var_constraint");
+    model.addQConstr(finalFilPELoadingVar == numColPE * numMulCol * tmpConstant, "num_Fil_Loading_Var_constraint");
+    // model.addQConstr(finalFilPELoadingVar == numColPE * numFilCol * tmpConstant, "num_Fil_Loading_Var_constraint");
 
     // Store the variable
     tmpOpVars.numFilPELoading = finalFilPELoadingVar;

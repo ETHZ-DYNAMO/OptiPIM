@@ -119,6 +119,19 @@ DataLayoutMILP::DataLayoutMILP(GRBEnv &env, std::vector<int32_t> &opGroup,
     if (int status = model.get(GRB_IntAttr_Status) != GRB_OPTIMAL) {
         llvm::errs() << "Skipping this run, expected behavior. \n";
 
+        // -----------------------------------------------------------------
+        // a)  Compute IIS
+        // -----------------------------------------------------------------
+        model.computeIIS();              // finds a minimal infeasible subset
+
+        // -----------------------------------------------------------------
+        // b)  Persist it to a file (optional but very handy)
+        //     – .ilp : human-readable LP file that contains *only* the IIS
+        //     – .lp  : full model with IIS flags (0/1) on each constr/bound
+        // -----------------------------------------------------------------
+        model.write("infeasible_subsystem.ilp");
+        model.write("full_model_with_IIS_flags.lp");
+        llvm::errs() << "IIS written to infeasible_subsystem.ilp and full_model_with_IIS_flags.lp\n";
     } else {
         // Create output file
         // TODO: Need to make the logging more flexible
@@ -452,6 +465,22 @@ void DataLayoutMILP::printConv2DMILPResult(const int32_t& selOpIndex) {
     // numInSys
     double tmpnumInSys = tmpOpVars.numInSys.get(GRB_DoubleAttr_X);
     llvm::outs() << "\t\tnumInSys: " << tmpnumInSys << "\n ";
+
+    // numChannelsSys
+    int64_t tmpnumChannelsSys = static_cast<int64_t>(tmpOpVars.numChannelsSys.get(GRB_DoubleAttr_X));
+    llvm::outs() << "\t\tnumChannelsSys: " << tmpnumChannelsSys << "\n ";
+
+    // channelLevelBandwidth
+    double tmpChannelLevelBandwidth = tmpOpVars.channelLevelBandwidth.get(GRB_DoubleAttr_X);
+    llvm::outs() << "\t\tchannelLevelBandwidth: " << tmpChannelLevelBandwidth << "\n ";
+
+    // finalOutCostVar
+    double tmpFinalOutCostVar = tmpOpVars.finalOutCostVar.get(GRB_DoubleAttr_X);
+    llvm::outs() << "\t\tfinalOutCostVar: " << tmpFinalOutCostVar << "\n ";
+
+    // finalInCostVar
+    double tmpFinalInCostVar = tmpOpVars.finalInCostVar.get(GRB_DoubleAttr_X);
+    llvm::outs() << "\t\tfinalInCostVar: " << tmpFinalInCostVar << "\n ";
 
     // If the target is PNM
     double tmpNumFilPELoading = 1;

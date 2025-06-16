@@ -155,12 +155,23 @@ fi
 # Build
 make
 exit_on_fail "Failed to build OPTIPIM"
+    
+#### Build the simulator ####
+echo_section "Building simulator"
+cd ..
+cd simulator
+if [ -d "build" ]; then
+    rm -rf build
+fi
+mkdir build
+cd build
+cmake ..
+make -j
+cd ../..
 
 echo -e "\n\033[1;32m╔════════════════════════════════════════════════════════════════╗\033[0m"
-echo -e "\033[1;32m║    ✨ Thank you for evaluating our artifact!                   ║\033[0m"
+echo -e "\033[1;32m║    ✨ Thank you for trying out OptiPIM                         ║\033[0m"
 echo -e "\033[1;32m║    ✨ Please let us know if you have any questions!            ║\033[0m"
-echo -e "\033[1;32m║    ✨ If you need a larger server to run the experiments,      ║\033[0m"
-echo -e "\033[1;32m║       please contact us!                                       ║\033[0m"
 echo -e "\033[1;32m╚════════════════════════════════════════════════════════════════╝\033[0m\n"
 
 

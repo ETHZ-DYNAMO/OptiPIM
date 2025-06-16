@@ -217,6 +217,14 @@ struct OpGRBVariables {
     // The number of input loading in the whole system
     GRBVar numInSys;
 
+    // Channel-level system bandwidth (the naming here is not very good, but it is used to represent the channel-level bandwidth)
+    GRBVar channelLevelBandwidth;
+    GRBVar numChannelsSys;
+
+    // Cost of input and output transmission
+    GRBVar finalOutCostVar;
+    GRBVar finalInCostVar;
+
     //
     //  HBM-PIM
     //
