@@ -150,10 +150,6 @@ This command invokes the simulator to evaluate the generated mapping, needed par
 
 ## 5. Generating Figures from the Paper
 
-> **Note on Experiment Duration**: Some of these experiments can take a very long time to complete. To help mitigate this, we have provided **pre-parsed results** in both CSV and JSON formats. If you prefer not to wait for the full experiments to finish, you may run them partially or skip them altogether and compare your partial outputs against these provided results. This approach ensures you can still reproduce and examine the final figures and trends without incurring the full runtime cost.
-
-Each key figure (9, 10, 14, and 15) has a dedicated Makefile target to automate the entire process. Running these will produce the corresponding PDF in the `exp_results/<figure>` directory.
-
 > [!NOTE]
 > The figures you generate may look slightly different from those in the paper. For **Figure 9**, we use a large number of randomly generated design points to verify the analytical model, leading to some run-to-run variation. For the other figures, we employ multi-threading to handle different design points in parallel, which can introduce minor discrepancies in the final results. Despite these differences, the overall trends remain consistent with those reported in the paper.
 
