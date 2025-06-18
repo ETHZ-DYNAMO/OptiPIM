@@ -130,7 +130,25 @@ This command invokes `test.sh`, which runs a brief sanity check on the OptiPIM s
 
 ---
 
-## 4. Generating Figures from the Paper
+## 4. Analyze Mapping Results with the Simulator
+To analyze the performance of the generated mapping using the simulator
+```bash
+simulator/build/ramulator2 --config_file <arch_config_file> \
+                           --param Frontend.path=<trace_file> \
+                           --param Frontend.PimCodeGen.alloc_method=<alloc_method>
+```
+This command invokes the simulator to evaluate the generated mapping, needed parameters:
+  1. `arch_config_file`:  
+    - **hbm_pim**: `simulator/hbmpim_config.yaml`  
+    - **simdram**: `simulator/simdram_config.yaml`
+  2. `trace_file`: The path of the generated mapping
+  3. `alloc_method`:  
+    - **hbm_pim**: `new`  
+    - **simdram**: `simdram`
+
+---
+
+## 5. Generating Figures from the Paper
 
 > **Note on Experiment Duration**: Some of these experiments can take a very long time to complete. To help mitigate this, we have provided **pre-parsed results** in both CSV and JSON formats. If you prefer not to wait for the full experiments to finish, you may run them partially or skip them altogether and compare your partial outputs against these provided results. This approach ensures you can still reproduce and examine the final figures and trends without incurring the full runtime cost.
 
@@ -139,7 +157,7 @@ Each key figure (9, 10, 14, and 15) has a dedicated Makefile target to automate 
 > [!NOTE]
 > The figures you generate may look slightly different from those in the paper. For **Figure 9**, we use a large number of randomly generated design points to verify the analytical model, leading to some run-to-run variation. For the other figures, we employ multi-threading to handle different design points in parallel, which can introduce minor discrepancies in the final results. Despite these differences, the overall trends remain consistent with those reported in the paper.
 
-### 4.1 Figure 9
+### 5.1 Figure 9
 ```bash
 make fig9
 ```
