@@ -166,11 +166,4 @@ make fig9
 > **Note**: We have provided pre-extracted data files (`validation_hbmpim.csv` and `validation_simdram.csv`) in `exp_results/fig9` for convenience. If you simply want to view the final validation figure without re-running the entire experiment, you can execute the plotting script (`validation/correlation_2.py`) directly. However, please be aware that running `make fig9` from scratch will overwrite these pre-extracted files.
 
 ---
-
-## 6. Contact and Support
-
-If you encounter any issues or have questions, please contact us!
-We hope this artifact evaluation package helps you reproduce our results smoothly and provides a clear pathway to experimenting with OptiPIM!
-
----
 **Thank you for trying out OptiPIM!**
