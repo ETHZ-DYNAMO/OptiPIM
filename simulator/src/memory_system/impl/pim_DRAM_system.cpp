@@ -3,6 +3,9 @@
 #include "dram_controller/controller.h"
 #include "addr_mapper/addr_mapper.h"
 #include "dram/dram.h"
+#include <iostream>
+#include <cstdint>
+#include <unordered_map>
 
 namespace Ramulator {
 
@@ -25,6 +28,8 @@ class PimDRAMSystem final : public IMemorySystem, public Implementation {
     int s_num_bkread_requests = 0;
     int s_num_bkwrite_requests = 0;
 
+    int m_burst_len = 0;
+
   public:
     void init() override { 
       // Create device (a top-level node wrapping all channel nodes)
@@ -43,10 +48,27 @@ class PimDRAMSystem final : public IMemorySystem, public Implementation {
 
       m_clock_ratio = param<uint>("clock_ratio").required();
 
+      // Report architecture parameters for cross-checking with analytical model
+      int num_pch = m_dram->get_level_size("pseudochannel");
+      int num_bg = m_dram->get_level_size("bankgroup");
+      int pe_per_bg = m_dram->m_organization.m_pe_per_bankgroup;
+      int pe_per_channel = pe_per_bg * num_bg * num_pch;
+      int sys_bw = m_dram->m_organization.dq * num_pch; // bits per cycle
+      int pe_bw =
+          m_dram->m_organization.m_pe_bits * pe_per_channel; // bits per cycle
+      m_burst_len = m_dram->m_timing_vals("nBL");
+      std::cout << "[PimDRAMSystem] channels: " << num_channels
+                << ", PEs/channel: " << pe_per_channel << ", SysBW: " << sys_bw
+                << " bits/cycle, PEBW: " << pe_bw
+                << " bits/cycle, burst length: " << m_burst_len << std::endl;
+
       register_stat(m_clk).name("memory_system_cycles");
       register_stat(s_num_read_requests).name("total_num_read_requests");
       register_stat(s_num_write_requests).name("total_num_write_requests");
       register_stat(s_num_other_requests).name("total_num_other_requests");
+      register_stat(s_num_bkread_requests).name("total_num_bkread_requests");
+      register_stat(s_num_bkwrite_requests).name("total_num_bkwrite_requests");
+      register_stat(s_num_compute_requests).name("total_num_compute_requests");
     };
 
     void setup(IFrontEnd* frontend, IMemorySystem* memory_system) override { }

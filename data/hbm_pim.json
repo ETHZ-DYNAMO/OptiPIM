@@ -4,9 +4,14 @@
     "numCol"  : 8192,
     "PEBandWidth" : 256,
     "SysBandWidth": 256,
+    "PEPerChannel" : 16,
+    "numChannel" : 16,
     "mulLat" : 44825,
     "addLat" : 2025,
     "rowAct" : 15,
+    "numBL" : 4,
+    "rowActLat" : 24,
+    "DQWidth" : 128,
     "interColTransLat" : 5,
     "interPETransLat" : 15
 }
