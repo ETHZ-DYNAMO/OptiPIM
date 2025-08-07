@@ -51,7 +51,7 @@ class PimTrace : public IFrontEnd, public Implementation {
       bool trace_sent = m_memory_system->send({t.addr_vec, t.op});
       if (trace_sent) {
         m_curr_trace_idx = (m_curr_trace_idx + 1);
-        if (m_curr_trace_idx % 1000000 == 0) {
+        if (m_curr_trace_idx % 100000000 == 0) {
           m_logger->info("Finished - {} / {} traces.", m_curr_trace_idx, m_trace.size());
         }
       }

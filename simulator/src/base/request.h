@@ -16,15 +16,17 @@ struct Request {
 
   // Basic request id convention
   // 0 = Read, 1 = Write. The device spec defines all others
-  // 2 = Compute TODO: might be specific to different levels
-  // 3 = Subarray-level read
-  // 4 = Subarray-level write
-  // 5 = Bank-level read
-  // 6 = Bank-level write
+  // 2 = AllBKRefresh
+  // 3 = Compute TODO: might be specific to different levels
+  // 4 = Subarray-level read
+  // 5 = Subarray-level write
+  // 6 = Bank-level read
+  // 7 = Bank-level write
   struct Type {
     enum : int {
       Read = 0, 
       Write,
+      AllBKRefresh,
       Compute,
       SARead,
       SAWrite,
