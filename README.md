@@ -13,7 +13,7 @@
 > The ASCII art is generated using [Text To Art Generator](https://patorjk.com/software/taag/#p=display&f=Graffiti&t=OptiPIM)
 ---
 
-Welcome to the **OptiPIM** artifact evaluation repository! This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and reproducing the figures (Figures 9, 10, 14, and 15) from our paper. The process is fully automated using the provided `Makefile`.
+OptiPIM is a coarse-grained mapper for mapping tensor programs onto digital PIM architectures. For more details about the mapping strategies, please refer to our ISCA'25 publication ["OptiPIM: Optimizing Processing-In-Memory Acceleration Using Integer Linear Programming"](https://dl.acm.org/doi/10.1145/3695053.3731041). This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and analyzing the mapping resutls with the simulator.
 
 > [!NOTE]
 > We are slowly changing the name from pim-opt to optipim.
@@ -145,25 +145,6 @@ This command invokes the simulator to evaluate the generated mapping, needed par
   3. `alloc_method`:  
     - **hbm_pim**: `new`  
     - **simdram**: `simdram`
-
----
-
-## 5. Generating Figures from the Paper
-
-> [!NOTE]
-> The figures you generate may look slightly different from those in the paper. For **Figure 9**, we use a large number of randomly generated design points to verify the analytical model, leading to some run-to-run variation. For the other figures, we employ multi-threading to handle different design points in parallel, which can introduce minor discrepancies in the final results. Despite these differences, the overall trends remain consistent with those reported in the paper.
-
-### 5.1 Figure 9
-```bash
-make fig9
-```
-1. Runs the script `fig9.sh`.
-    - This will build the cycle-accurate simulator.
-    - Randomly generate all simulation input files.
-    - Run cycle accurate simulation and our analytical model.
-2. Produces `fig9.pdf` under `exp_results/fig9/`.
-
-> **Note**: We have provided pre-extracted data files (`validation_hbmpim.csv` and `validation_simdram.csv`) in `exp_results/fig9` for convenience. If you simply want to view the final validation figure without re-running the entire experiment, you can execute the plotting script (`validation/correlation_2.py`) directly. However, please be aware that running `make fig9` from scratch will overwrite these pre-extracted files.
 
 ---
 **Thank you for trying out OptiPIM!**
