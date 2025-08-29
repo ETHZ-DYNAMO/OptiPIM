@@ -16,12 +16,12 @@
 OptiPIM is a coarse-grained mapper for mapping tensor programs onto digital PIM architectures. For more details about the mapping strategies, please refer to our ISCA'25 publication ["OptiPIM: Optimizing Processing-In-Memory Acceleration Using Integer Linear Programming"](https://dl.acm.org/doi/10.1145/3695053.3731041). This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and analyzing the mapping resutls with the simulator.
 
 > [!NOTE]
-> We are slowly changing the name from pim-opt to optipim.
+> We are slowly changing the name from pim-opt to optipim in the source code.
 ---
 
 ## 1. Prerequisites
 
-To successfully build and run these scripts, please ensure you have:
+To successfully build and run OptiPIM, please ensure you have:
 
 1. **Dependencies required by the project**
     Most of our dependencies are provided as standard packages on most Linux distributions. OptiPIM needs a working C/C++ toolchain (compiler, linker), `cmake` and `ninja` for building the project, Python (3.11), and standard command-line tools like `git`.
