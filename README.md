@@ -13,7 +13,7 @@
 > The ASCII art is generated using [Text To Art Generator](https://patorjk.com/software/taag/#p=display&f=Graffiti&t=OptiPIM)
 ---
 
-OptiPIM is a coarse-grained mapper for mapping tensor programs onto digital PIM architectures. For more details about the mapping strategies, please refer to our ISCA'25 publication ["OptiPIM: Optimizing Processing-In-Memory Acceleration Using Integer Linear Programming"](https://dl.acm.org/doi/10.1145/3695053.3731041). This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and analyzing the mapping resutls with the simulator.
+OptiPIM is a mapper for mapping tensor programs onto digital PIM architectures. For more details about the mapping strategies, please refer to our ISCA'25 publication ["OptiPIM: Optimizing Processing-In-Memory Acceleration Using Integer Linear Programming"](https://dl.acm.org/doi/10.1145/3695053.3731041). This README will guide you through the entire workflow of installing OptiPIM, running sample tests, and analyzing the mapping resutls with the simulator.
 
 > [!NOTE]
 > We are slowly changing the name from pim-opt to optipim in the source code.
