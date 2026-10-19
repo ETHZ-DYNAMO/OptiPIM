@@ -1,5 +1,5 @@
 trace,target,finalPerformance,inLoadingCost,numColPE,numFilCol,numFilPELoading,numInCol,numInPE,numInSys,numMulCol,numOutCol,numOutPE,numOutSys,numPESys,numRedCol,numRedOutCol,outTransCost
-group12/mappings/hbmpim/C1/optipim.trace,hbmpim,870912.0,225792.0,448,1152,451584.0,33,14784,473088,8064,896,401408,28672,32,7168,8,1792.0
+group12/mappings/hbmpim/C1/optipim.trace,hbmpim,870912.0,225792.0,448,1152,451584.0,45,20160,645120,8064,896,401408,28672,32,7168,8,1792.0
 group12/mappings/hbmpim/C2/optipim.trace,hbmpim,1096704.0,451584.0,448,576,451584.0,36,16128,516096,8064,896,401408,28672,32,7168,8,1792.0
 group12/mappings/hbmpim/C3/optipim.trace,hbmpim,121856.0,50176.0,448,64,50176.0,14,6272,200704,896,896,401408,28672,32,0,0,1792.0
 group12/mappings/hbmpim/M1/optipim.trace,hbmpim,1064960.0,524288.0,512,96,393216.0,128,65536,1572864,6144,3072,1572864,73728,24,3072,1,4608.0

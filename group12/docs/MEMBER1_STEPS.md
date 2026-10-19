@@ -17,12 +17,14 @@
    "infeasible" in 0.02 s. The model solves at 8, 16, 17 and 20 banks. With
    `Presolve 0` it solves to a proven optimum, so `run_optipim.sh` disables
    presolve for HBM-PIM. C1: objective 360,149 at 32 banks vs 707,519 at 16.
-2. **C1 vs authors' heuristic** (analytical model): 870,912 vs 29,546,496, a
+2. **Stride/dilation order.** pim-opt writes `DilationStride` dilation-first, the authors' Python model reads stride-first. `score_analytical.py` now corrects it for `optipim*` traces. Only C1 (stride 2) changes: SIMDRAM model cost 24,995,102 -> 26,701,846; HBM-PIM C1 unchanged (870,912).
+2b. **C1 vs authors' heuristic** (analytical model): 870,912 vs 29,546,496, a
    34x reduction, almost all from input loading. The paper says about 100x; units
    of its figure not verified.
 3. **Solver objective is not the model cost.** On HBM-PIM the model is 2-3x
    (conv) and 70-110x (matmul) above the ILP objective; SIMDRAM agrees within
    5-32%. Cause not found (guess: one-time weight loading).
+3b. **OptiPIM vs heuristic** (model, from the scoring thread): 27-34x better on HBM-PIM convs, 0.78x (worse) on M1; cause unverified, heuristic not simulated.
 4. **Model vs simulator** (`group12/results/sim_check.csv`): HBM-PIM within 2.1% (C3, M1, M2). SIMDRAM model underestimates by 38-76% (C3 +37.6%, M1 +41.2%, M2 +75.8%). C1, C2 not simulated (too slow).
 5. **Your C1 mapping differs from the paper's Fig. 12b** (ours uses all 32
    banks: Q=2, C=16; paper: C=16 on 16 banks). Both are valid; we did not

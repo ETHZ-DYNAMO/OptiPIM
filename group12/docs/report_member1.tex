@@ -87,7 +87,7 @@ M2 & 5.8 & 1.1 \\
 \label{sec:objcheck}
 We scored every OptiPIM mapping with the authors' Python analytical model and
 compared it with the objective value of the ILP (Table~\ref{tab:obj}). On
-SIMDRAM the two agree within 5--32\%. On HBM-PIM the model's cost is 2--3$\times$
+SIMDRAM the two agree within 5--32\%. (\texttt{pim-opt} writes the stride and dilation of a trace in the opposite order to what the authors' Python model reads, so we swap them when scoring C1, the only strided layer; read directly, C1 on SIMDRAM would be scored 24{,}995{,}102.) On HBM-PIM the model's cost is 2--3$\times$
 the solver objective for the convolutions and 70--110$\times$ for the matrix
 multiplications. We have not identified the cause; one possibility is that
 the model's total includes the one-time weight loading, which the ILP
@@ -107,7 +107,7 @@ loading (225{,}792 versus 28{,}901{,}376). The paper reports a larger gap
  & \multicolumn{2}{c}{HBM-PIM} & \multicolumn{2}{c}{SIMDRAM} \\
 Op & ILP & model & ILP & model \\
 \hline
-C1 & 360{,}149 & 870{,}912 & 23{,}273{,}702 & 24{,}995{,}102 \\
+C1 & 360{,}149 & 870{,}912 & 23{,}273{,}702 & 26{,}701{,}846 \\
 C2 & 364{,}316 & 1{,}096{,}704 & 23{,}273{,}702 & 24{,}338{,}662 \\
 C3 & 45{,}906 & 121{,}856 & 3{,}174{,}416 & 3{,}575{,}824 \\
 M1 & 9{,}888 & 1{,}064{,}960 & 14{,}632{,}830 & 15{,}443{,}838 \\
@@ -115,6 +115,13 @@ M2 & 3{,}040 & 221{,}184 & 2{,}471{,}295 & 3{,}257{,}727 \\
 \hline
 \end{tabular}
 \end{table}
+
+\subsection{OptiPIM versus the heuristic}
+Scored with the analytical model, the OptiPIM mappings beat the authors'
+weight-parallel heuristic (\texttt{heuristic\_1}) on HBM-PIM by 27$\times$ to
+34$\times$ on the convolutions, but lose on M1 (0.78$\times$ the heuristic's speed).
+The cause of the M1 result is not verified. The heuristic traces were not
+replayed in the simulator, so these ratios rest on the analytical model alone.
 
 \subsection{Analytical model versus simulator}
 \label{sec:simcheck}

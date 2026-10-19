@@ -2,6 +2,9 @@
 """Score mapping traces with the authors' analytical model (validation/analytical_modeling).
 Usage (from the repo root):
   python3 group12/scripts/score_analytical.py <hbmpim|simdram> trace1 [trace2 ...]
+pim-opt writes the DilationStride line as dilation,dilation,stride,stride, while the authors' own
+baseline traces (and get_trace_perf.py) use stride,stride,dilation,dilation. Traces whose file name
+starts with "optipim" are therefore read dilation-first. This only matters for strided convs (C1).
 Prints every numeric field of the model's result (finalPerformance and its cost parts)
 and writes group12/results/analytical_check_<target>.csv.
 """
@@ -9,10 +12,24 @@ import csv
 import sys
 
 sys.path.insert(0, "validation")
-from analytical_modeling.get_trace_perf import get_trace_perf
-from analytical_modeling.analytical import ArchInfo
+import os
+from analytical_modeling.parser_trace import TraceParser
+from analytical_modeling.analytical import cal_performance_conv2D, cal_performance_FC, ArchInfo
 
 ARCH = {"hbmpim": ("data/hbm_pim.json", 1), "simdram": ("data/dram.json", 0)}
+
+
+def score(trace, arch, dev):
+    p = TraceParser(trace)
+    if p.operation_type == "conv2d":
+        ds = p.dilation_stride
+        if os.path.basename(trace).startswith("optipim"):
+            dilation, stride = ds[0], ds[2]
+        else:
+            stride, dilation = ds[0], ds[2]
+        print(f"   DilationStride={list(ds)} -> stride={stride} dilation={dilation}")
+        return cal_performance_conv2D(arch, p.get_loop_bounds(), p.get_trans_coeff(), stride, dilation, dev)
+    return cal_performance_FC(arch, p.get_loop_bounds(), dev)
 
 
 def numeric_fields(r):
@@ -31,7 +48,7 @@ def main():
     arch = ArchInfo(arch_file)
     rows = []
     for t in sys.argv[2:]:
-        fields = numeric_fields(get_trace_perf(t, arch, dev))
+        fields = numeric_fields(score(t, arch, dev))
         print(t)
         print("  ", fields)
         rows.append({"trace": t, "target": target, **fields})
