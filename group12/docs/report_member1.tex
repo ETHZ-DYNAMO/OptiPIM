@@ -16,11 +16,14 @@ with the paper's cost model (Eq.~17--20); and a modified Ramulator2 that
 replays a trace with PIM commands and reports \texttt{memory\_system\_cycles}.
 
 We built the flow on Ubuntu 22.04 under WSL2 on a Windows laptop
-(\fillin{CPU, cores and RAM given to WSL}). Building LLVM, \texttt{pim-opt} and
-the simulator took \fillin{hours}. We used Gurobi 13.0.3 with a free academic
+(6 logical cores and 11\,GB of RAM given to WSL, Ubuntu 22.04.5, g++ 11.4.0). Building LLVM, \texttt{pim-opt} and
+the simulator took about 4\,h\,15\,min (LLVM and \texttt{pim-opt} about 4\,h, the simulator about 15\,min more, from file timestamps). We used Gurobi 13.0.3 with a free academic
 licence, while the paper used 11.0.3. The repository's CMake module only
 searches for Gurobi 11.0 and 12.0, so we exposed the 13.0 library under the
-12.0 name; no source code was changed. A Dockerfile in the repository
+12.0 name; no source code was changed. With Gurobi 13, presolve wrongly
+reported the $3{\times}3$ convolutions C1 and C2 infeasible on HBM-PIM at 32 banks
+(the model solves at 8, 16, 17 and 20 banks); we therefore solve the HBM-PIM
+runs with presolve disabled (\texttt{Presolve 0}), which gives a proven optimum. A Dockerfile in the repository
 reproduces the same build for members on macOS.
 
 \subsection{Operators and targets}
@@ -58,10 +61,9 @@ All runs use the paper's full method: flexible indexing
 (\texttt{--obj-method 0}). One script, \texttt{group12/scripts/run\_all.sh},
 solves all ten operator--target pairs, stores each mapping and the full
 Gurobi log, and records the wall-clock and Gurobi solve times
-(Table~\ref{tab:solve}). Solving took between \fillin{min} and \fillin{max}
+(Table~\ref{tab:solve}). Solving took between 1.1 and 181
 seconds per operator, compared with 1--209~s reported by the paper on a
-16-core server. A rerun from a fresh clone of the repository produced
-\fillin{identical mappings / mappings with identical objective values}.
+16-core server. A rerun from a fresh clone of the repository produced \fillin{identical mappings / mappings with identical objective values (Gate 2)}.
 
 \begin{table}[t]
 \centering
@@ -71,22 +73,93 @@ seconds per operator, compared with 1--209~s reported by the paper on a
 \hline
 Operator & HBM-PIM & SIMDRAM \\
 \hline
-C1 & \fillin{} & \fillin{} \\
-C2 & \fillin{} & \fillin{} \\
-C3 & \fillin{} & \fillin{} \\
-M1 & \fillin{} & \fillin{} \\
-M2 & \fillin{} & \fillin{} \\
+C1 & 64.2 & 44.3 \\
+C2 & 181.0 & 85.0 \\
+C3 & 27.5 & 5.8 \\
+M1 & 2.9 & 2.4 \\
+M2 & 5.8 & 1.1 \\
 \hline
 \end{tabular}
 \end{table}
 
+
+\subsection{Solver objective versus analytical model}
+\label{sec:objcheck}
+We scored every OptiPIM mapping with the authors' Python analytical model and
+compared it with the objective value of the ILP (Table~\ref{tab:obj}). On
+SIMDRAM the two agree within 5--32\%. On HBM-PIM the model's cost is 2--3$\times$
+the solver objective for the convolutions and 70--110$\times$ for the matrix
+multiplications. We have not identified the cause; one possibility is that
+the model's total includes the one-time weight loading, which the ILP
+objective may omit. For C1 on HBM-PIM the model gives 870{,}912 cycles for the
+OptiPIM mapping and 29{,}546{,}496 for the authors' weight-parallel heuristic
+mapping, a 34$\times$ reduction that comes almost entirely from input
+loading (225{,}792 versus 28{,}901{,}376). The paper reports a larger gap
+(about 100$\times$) for this layer; we did not verify the units of its figure.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{ILP objective and analytical-model cost of the OptiPIM mappings}
+\label{tab:obj}
+\begin{tabular}{lrrrr}
+\hline
+ & \multicolumn{2}{c}{HBM-PIM} & \multicolumn{2}{c}{SIMDRAM} \\
+Op & ILP & model & ILP & model \\
+\hline
+C1 & 360{,}149 & 870{,}912 & 23{,}273{,}702 & 24{,}995{,}102 \\
+C2 & 364{,}316 & 1{,}096{,}704 & 23{,}273{,}702 & 24{,}338{,}662 \\
+C3 & 45{,}906 & 121{,}856 & 3{,}174{,}416 & 3{,}575{,}824 \\
+M1 & 9{,}888 & 1{,}064{,}960 & 14{,}632{,}830 & 15{,}443{,}838 \\
+M2 & 3{,}040 & 221{,}184 & 2{,}471{,}295 & 3{,}257{,}727 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Analytical model versus simulator}
+\label{sec:simcheck}
+We replayed the OptiPIM mappings in the authors' Ramulator2 simulator and
+compared the cycle count with the analytical model (Table~\ref{tab:sim}).
+On HBM-PIM the model is within 2.1\% of the simulator for all three
+operators checked, which agrees with the paper's claim that the model tracks
+the simulator closely. On SIMDRAM the model consistently underestimates the
+simulator, by 38--76\%; we did not find the cause. Note
+that the solver objective differs from both (Table~\ref{tab:obj}), so the ILP
+objective is not itself a cycle count.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Analytical model versus Ramulator2 (cycles)}
+\label{tab:sim}
+\begin{tabular}{llrrr}
+\hline
+Op & Target & Model & Simulator & Diff. \\
+\hline
+C3 & HBM-PIM & 121{,}856 & 124{,}464 & $+2.1\%$ \\
+M1 & HBM-PIM & 1{,}064{,}960 & 1{,}082{,}667 & $+1.7\%$ \\
+M2 & HBM-PIM & 221{,}184 & 224{,}061 & $+1.3\%$ \\
+C3 & SIMDRAM & 3{,}575{,}824 & 4{,}919{,}252 & $+37.6\%$ \\
+M1 & SIMDRAM & 15{,}443{,}838 & 21{,}804{,}288 & $+41.2\%$ \\
+M2 & SIMDRAM & 3{,}257{,}727 & 5{,}725{,}248 & $+75.8\%$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Mapping found for C1}
+On HBM-PIM the ILP maps C1 with $Q{=}2$ and $C{=}16$ across the 32 banks, $P{=}28$,
+$Q{=}2$, $C{=}8$ across columns, and $K{=}128$, $Q{=}7$, $R{=}S{=}3$ in time. The paper's
+Fig.~12(b) mapping differs (16 banks, $C{=}16$); we did not score the paper's
+mapping, so we make no claim that the two have equal cost.
+
 \section{Limitations of Our Setup}
 \label{sec:limits}
 \begin{itemize}
+\item \textbf{Few simulator points.} C1 and C2 were not replayed in Ramulator2 (their traces take very long), so the model-versus-simulator check covers C3, M1 and M2 only.
 \item \textbf{No real hardware.} All cycle counts come from the analytical
 model and the authors' Ramulator2-based simulator, which model HBM-PIM and
 SIMDRAM timing but not every effect of a real chip.
-\item \textbf{Different solver version and machine.} We used Gurobi 13.0.3 on
+\item \textbf{Different solver version and machine.} We used Gurobi 13.0.3 (with presolve disabled for HBM-PIM) on
 a laptop instead of 11.0.3 on a 16-core server, so absolute solve times are
 not comparable, and an ILP with several optimal solutions may return a
 different mapping with the same cost.
@@ -98,7 +171,7 @@ reimplementation from the paper's description (Sec.~6.4.1), checked against
 the heuristic trace files the authors ship, not the authors' original code.
 \item \textbf{Arch file choice.} The authors' scripts use
 \texttt{data/hbm\_pim.json} in one place and \texttt{data/dram.json} in
-another for SIMDRAM; we use \texttt{dram.json}, as in their validation script.
+another for SIMDRAM; we use \texttt{hbm\_pim.json} for HBM-PIM and \texttt{dram.json} for SIMDRAM.
 \end{itemize}
 
 \section*{What We Left Out}
@@ -119,7 +192,10 @@ PyTorch $\to$ Torch-MLIR front end & The authors' shipped \texttt{.linalg.mlir} 
 \end{tabular}
 \end{table}
 
-% Contribution statement line for Member 1:
-% \textbf{\fillin{Name}} (Member 1) built the toolchain and Gurobi setup, wrote
-% the scripts that solve all operators and log solve times, the Dockerfile
-% and build instructions, and wrote the setup and limitations sections.
+\section*{Member Contributions (Member 1)}
+\textbf{Pari Khandelwal} (Member 1) built the toolchain (LLVM, \texttt{pim-opt},
+Ramulator2) and the Gurobi setup on WSL2, diagnosed the Gurobi 13 presolve
+failure and its workaround, wrote the scripts that solve all operators on both
+targets and log solve times, the scripts that score mappings with the analytical
+model and the simulator, the Dockerfile and the build-and-run instructions, and
+wrote the setup and limitations sections.

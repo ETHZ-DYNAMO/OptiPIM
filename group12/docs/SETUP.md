@@ -9,10 +9,10 @@ the build: everything they need (mapping files, CSVs) is committed.
 | Item | Value |
 | --- | --- |
 | OS | Windows + WSL2, Ubuntu 22.04 (repo in `~/OptiPIM-grp12`, never under `/mnt/c`) |
-| Compiler | g++ / clang from Ubuntu 22.04 (`g++ --version`: FILL IN) |
+| Compiler | g++ / clang from Ubuntu 22.04 (g++ 11.4.0) |
 | Gurobi | 13.0.3, named-user academic licence (paper used 11.0.3) |
-| CPU / RAM given to WSL | FILL IN (e.g. 6 cores, 12 GB) |
-| Build time | FILL IN |
+| CPU / RAM given to WSL | 6 logical cores, 11 GB |
+| Build time | about 4 h 15 min |
 
 ## 1. Packages
 
@@ -65,6 +65,7 @@ Outputs:
 - `group12/results/sim_check.csv` Ramulator2 `memory_system_cycles` per mapping
 
 One operator: `bash group12/scripts/run_optipim.sh C1 hbmpim`.
+Gurobi 13 presolve wrongly reports the 3x3 convolutions infeasible at 32 banks, so the script runs pim-opt with `Presolve 0` (via a temporary `gurobi.env`). Use `PRESOLVE=1` to turn that off.
 Another arch file: `ARCH=data/hbm_pim.json bash group12/scripts/run_optipim.sh C1 simdram`.
 
 ## Settings

@@ -1,0 +1,7 @@
+operator,target,mapper,simulated_cycles,sim_seconds
+M2,hbmpim,optipim,224061,4
+M2,simdram,optipim,5725248,15
+M1,hbmpim,optipim,1082667,17
+M1,simdram,optipim,21804288,49
+C3,hbmpim,optipim,124464,3
+C3,simdram,optipim,4919252,12
