@@ -1,0 +1,154 @@
+Set parameter Username
+Set parameter LicenseID to value 2876265
+Set parameter TimeLimit to value 400
+Set parameter MIPFocus to value 1
+Set parameter NumericFocus to value 3
+Academic license - for non-commercial use only - expires 2027-10-19
+Warning: constraint name "[Op] numChan_lower" has a space
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (linux64 - "Ubuntu 22.04.5 LTS")
+
+CPU model: 13th Gen Intel(R) Core(TM) i5-13420H, instruction set [SSE2|AVX|AVX2]
+Thread count: 3 physical cores, 6 logical processors, using up to 6 threads
+
+Non-default parameters:
+TimeLimit  400
+MIPFocus  1
+NumericFocus  3
+
+Optimize a model with 42 rows, 181 columns and 426 nonzeros (Min)
+Model fingerprint: 0x3af5eeb1
+Model has 4 linear objective coefficients
+Model has 25 quadratic constraints
+Variable types: 4 continuous, 177 integer (138 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 8e+02]
+  QMatrix range    [6e-02, 1e+00]
+  QLMatrix range   [1e+00, 2e+01]
+  Objective range  [1e+00, 5e+04]
+  Bounds range     [1e+00, 6e+15]
+  RHS range        [1e+00, 8e+03]
+Warning: Model contains large bounds
+
+Presolve removed 16 rows and 51 columns
+Presolve time: 0.01s
+Presolved: 86 rows, 131 columns, 512 nonzeros
+Presolved model has 15 bilinear constraint(s)
+Warning: Model contains variables with very large bounds participating
+         in product terms.
+         Presolve was not able to compute smaller bounds for these variables.
+         Consider bounding these variables or reformulating the model.
+
+
+Solving non-convex MIQCP to global optimality
+
+Variable types: 5 continuous, 126 integer (103 binary)
+
+Root relaxation: objective 4.841648e+04, 116 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 48416.4786    0   18          - 48416.4786      -     -    0s
+     0     0 48416.4786    0   16          - 48416.4786      -     -    0s
+H    0     0                    7.795430e+07 48416.4796   100%     -    0s
+     0     2 48416.4796    0   16 7.7954e+07 48416.4796   100%     -    0s
+H  174   150                    2.598959e+07 48417.6183   100%   7.0    0s
+*  222   167              17    2.023853e+07 48417.6183   100%   6.9    0s
+H  249   167                    1.951919e+07 48418.6999   100%   6.6    0s
+*  367   228              28    1.476550e+07 48418.6999   100%   7.6    0s
+*  593   357               7    1.472863e+07 48438.3932   100%   7.8    0s
+*  598   357              13    1.465657e+07 48438.3932   100%   7.7    0s
+H  685   416                    1.463939e+07 48668.3003   100%   7.8    0s
+* 1198   548              25    1.463283e+07 97153.8906  99.3%   7.5    0s
+
+Explored 19593 nodes (181229 simplex iterations) in 2.38 seconds (1.51 work units)
+Thread count was 6 (of 6 available processors)
+
+Solution count 9: 1.46328e+07 1.46394e+07 1.46566e+07 ... 7.79543e+07
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.463283000000e+07, best bound 1.463283000000e+07, gap 0.0000%
+[Debug] arch and knob paths: ./data/dram.json ./data/knobs.json
+Successfully loaded tuning knob file ./data/knobs.json
+    Knobs:
+        accTolerance: 0.02
+        colMulWeight: 1
+        colAddWeight: 1
+        outTransWeight: 1
+        inLoadingWeight: 1
+        interOpTransWeight: 15
+Successfully loaded architecture file ./data/dram.json
+    ArchInfo:
+        dataWidth: 16 bits/element
+        numRow: 8192
+        numCol: 8192
+        PEBandWidth: 256 bits/cycle
+        SysBandWidth: 256 bits/cycle
+        mulLat: 48411 cycles
+        addLat: 2187 cycles
+        rowAct: 27 cycles
+        interColTransLat: 5 s
+        interPETransLat: 5
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(FC_N): 1
+		Div Vector: [ 1 ];
+	Output Channel(FC_K): 1
+		Div Vector: [ 1 ];
+	Matrix A Row(FC_P): 128
+		Div Vector: [ 1 2 4 8 16 32 64 128 ];
+	Matrix A Col(FC_Q): 768
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 256 384 768 ];
+	Matrix B Col(FC_R): 768
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 256 384 768 ];
+
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(FC_N): 1
+		Div Vector: [ 1 ];
+	Output Channel(FC_K): 1
+		Div Vector: [ 1 ];
+	Matrix A Row(FC_P): 128
+		Div Vector: [ 1 2 4 8 16 32 64 128 ];
+	Matrix A Col(FC_Q): 768
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 256 384 768 ];
+	Matrix B Col(FC_R): 768
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 256 384 768 ];
+
+
+
+[OPTIMIZED OPERATOR RESULTS]
+	Op ID: 0; Type: FC; Target Device: Process-using-memory device;
+	[Level 0 (Inner Most)]:
+		FC_N: 1
+		FC_K: 1
+		FC_P: 1
+		FC_Q: 48
+		FC_R: 6
+	[Level 1]:
+		FC_N: 1
+		FC_K: 1
+		FC_P: 128
+		FC_Q: 8
+		FC_R: 8
+	[Level 2 (Outter Most)]:
+		FC_N: 1
+		FC_K: 1
+		FC_P: 1
+		FC_Q: 2
+		FC_R: 16
+	[Perfromance modeling Variables]:
+		NumMulCol: 288
+ 		numOutCol: 6
+ 		numFilCol: 288
+ 		numInCol: 48
+ 		numRedOutCol: 47
+ 		numRedCol: 282
+ 		numColPE: 8192
+ 		numOutPE: 49152
+ 		numInPE: 393216
+ 		numPESys: 32
+ 		numOutSys: 1.572864e+06
+ 		numInSys: 7.864320e+05
+ 	[Analytical Perforamnce Modeling Result]:
+		 Real Cost: 1.691840e+07

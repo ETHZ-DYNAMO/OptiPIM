@@ -1,0 +1,11 @@
+operator,target,arch,wall_seconds,gurobi_seconds,objective,status
+C1,hbmpim,data/hbm_pim.json,64.19,64.15,3.601490000000e+05,ok
+C1,simdram,data/dram.json,44.34,44.32,2.327370200000e+07,ok
+C2,hbmpim,data/hbm_pim.json,181.00,180.98,3.643160000000e+05,ok
+C2,simdram,data/dram.json,84.98,84.95,2.327370200000e+07,ok
+C3,hbmpim,data/hbm_pim.json,27.49,27.47,4.590600000000e+04,ok
+C3,simdram,data/dram.json,5.83,5.81,3.174416000000e+06,ok
+M1,hbmpim,data/hbm_pim.json,2.87,2.85,9.888000000000e+03,ok
+M2,hbmpim,data/hbm_pim.json,5.77,5.75,3.040000000000e+03,ok
+M2,simdram,data/dram.json,1.10,1.09,2.471295000000e+06,ok
+M1,simdram,data/dram.json,2.43,2.38,1.463283000000e+07,ok

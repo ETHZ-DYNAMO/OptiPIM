@@ -1,0 +1,8 @@
+# copy to the repo root as .dockerignore so the image does not copy local builds
+llvm-project/
+build/
+simulator/build/
+optipim_env/
+Debug/
+Result/
+.git/

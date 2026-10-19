@@ -1,0 +1,216 @@
+Set parameter Username
+Set parameter LicenseID to value 2876265
+Set parameter Presolve to value 0
+Read parameters from file gurobi.env
+Set parameter TimeLimit to value 400
+Set parameter MIPFocus to value 1
+Set parameter NumericFocus to value 3
+Academic license - for non-commercial use only - expires 2027-10-19
+Warning: variable name "[Op_0] tmpNum_Mul_Col_Var_0" has a space
+Warning: constraint name "[Op] numChan_lower" has a space
+Warning: Q constraint 47 doesn't have a name
+Warning: to let Gurobi read it back, use rlp format
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (linux64 - "Ubuntu 22.04.5 LTS")
+
+CPU model: 13th Gen Intel(R) Core(TM) i5-13420H, instruction set [SSE2|AVX|AVX2]
+Thread count: 3 physical cores, 6 logical processors, using up to 6 threads
+
+Non-default parameters:
+TimeLimit  400
+MIPFocus  1
+NumericFocus  3
+Presolve  0
+
+Optimize a model with 74 rows, 238 columns and 438 nonzeros (Min)
+Model fingerprint: 0x709a8ba2
+Model has 4 linear objective coefficients
+Model has 65 quadratic constraints
+Model has 2 simple general constraints
+  2 MIN
+Variable types: 8 continuous, 230 integer (139 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+02]
+  QMatrix range    [6e-02, 1e+00]
+  QLMatrix range   [1e+00, 2e+01]
+  Objective range  [1e+00, 2e+01]
+  Bounds range     [1e+00, 2e+14]
+  RHS range        [1e+00, 8e+03]
+  QRHS range       [1e+00, 1e+00]
+Warning: Model contains large bounds
+
+Warning: Model contains variables with very large bounds participating
+         in product terms.
+         Consider bounding these variables or reformulating the model.
+
+
+Solving non-convex MIQCP to global optimality
+
+Variable types: 7 continuous, 244 integer (151 binary)
+
+Root relaxation: objective 3.483912e+01, 167 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   34.83912    0   63          -   34.83912      -     -    0s
+     0     0   34.83912    0   63          -   34.83912      -     -    0s
+     0     0   34.83912    0   63          -   34.83912      -     -    0s
+H    0     0                    641648.00000   34.83912   100%     -    0s
+     0     1   49.87037    0   63 641648.000   49.87037   100%     -    0s
+H   12    16                    142688.00000   65.06250   100%   9.8    0s
+H   45    30                    142352.00000   65.06250   100%   7.4    0s
+H   47    30                    106400.00000   65.06250   100%   7.4    0s
+H   50    30                    47472.000000   65.06250   100%   8.0    0s
+H   64    45                    45906.000000   65.06250   100%   7.6    0s
+ 33685  7998 infeasible   37      45906.0000  656.41836  98.6%   8.6    5s
+ 70590 12243 infeasible   44      45906.0000 1379.87890  97.0%   8.7   10s
+ 107912 13733 8825.40038   49   35 45906.0000 2364.79378  94.8%   8.8   15s
+ 144811 13050 33900.4266   43   36 45906.0000 4105.87500  91.1%   8.8   20s
+ 184075  7747 38159.0000   36    2 45906.0000 9212.00774  79.9%   8.7   25s
+
+Explored 205937 nodes (1763035 simplex iterations) in 27.47 seconds (19.40 work units)
+Thread count was 6 (of 6 available processors)
+
+Solution count 6: 45906 47472 106400 ... 641648
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.590600000000e+04, best bound 4.590600000000e+04, gap 0.0000%
+[Debug] arch and knob paths: ./data/hbm_pim.json ./data/knobs.json
+Successfully loaded tuning knob file ./data/knobs.json
+    Knobs:
+        accTolerance: 0.02
+        colMulWeight: 1
+        colAddWeight: 1
+        outTransWeight: 1
+        inLoadingWeight: 1
+        interOpTransWeight: 15
+Successfully loaded architecture file ./data/hbm_pim.json
+    ArchInfo:
+        dataWidth: 16 bits/element
+        numRow: 8192
+        numCol: 8192
+        PEBandWidth: 256 bits/cycle
+        SysBandWidth: 256 bits/cycle
+        mulLat: 44825 cycles
+        addLat: 2025 cycles
+        rowAct: 15 cycles
+        interColTransLat: 5 s
+        interPETransLat: 5
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Output Height(Q): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Input Channel(C): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Filter Width(R): 1
+		Div Vector: [ 1 ];
+	Filter Height(S): 1
+		Div Vector: [ 1 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 8
+		Q_S_LUT LUT Size: 8
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Output Height(Q): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Input Channel(C): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Filter Width(R): 1
+		Div Vector: [ 1 ];
+	Filter Height(S): 1
+		Div Vector: [ 1 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 8
+		Q_S_LUT LUT Size: 8
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+
+
+[OPTIMIZED OPERATOR RESULTS]
+	Op ID: 0; Type: Conv2D; Target Device: Process-near-memory device;
+	[Level 0 (Inner Most)]:
+		N: 1
+		K: 64
+		P: 2
+		Q: 7
+		C: 1
+		R: 1
+		S: 1
+	[Level 1]:
+		N: 1
+		K: 1
+		P: 14
+		Q: 8
+		C: 4
+		R: 1
+		S: 1
+	[Level 2 (Outter Most)]:
+		N: 1
+		K: 1
+		P: 2
+		Q: 1
+		C: 16
+		R: 1
+		S: 1
+	[Transformation Coefficients]:
+		Conv2D_P: 1
+			Trans Comb 2 selected;
+		Conv2D_R: 1
+			Trans Comb 4 selected;
+		Conv2D_Q: 1
+			Trans Comb 2 selected;
+		Conv2D_S: 1
+			Trans Comb 0 selected;
+		P_R_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+		Q_S_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+	[Perfromance modeling Variables]:
+		PRGCDValue: 1.000000e+00
+ 		QSGCDValue: 1.000000e+00
+
+ 		NumMulCol: 896
+ 		numOutCol: 896
+ 		numFilCol: 64
+ 		numInCol: 14
+ 		numInTerm2Col: 2
+ 		numInTerm3Col: 7
+ 		numRedOutCol: 0
+ 		numRedCol: 0
+ 		numColPE: 448
+ 		numOutPE: 401408
+ 		numInPE: 6272
+ 		numPESys: 32
+ 		numOutSys: 2.867200e+04
+ 		numInSys: 2.007040e+05
+ 		numChannelsSys: 2
+ 		channelLevelBandwidth: 5.120000e+02
+ 		finalOutCostVar: 8.960000e+02
+ 		finalInCostVar: 6.482000e+03
+ 		numFilLoading: 2.508800e+04
+ 	[Analytical Perforamnce Modeling Result]:
+		 Real Cost: 2.554240e+05

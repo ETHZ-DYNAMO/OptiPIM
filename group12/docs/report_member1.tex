@@ -1,0 +1,125 @@
+% Member 1 sections for the IEEEtran report. Paste into the Overleaf project.
+% Replace every \fillin{...} with the real value once the runs are done.
+\providecommand{\fillin}[1]{\textcolor{red}{[#1]}}
+
+\section{Implementation and Experimental Setup}
+\label{sec:setup}
+
+\subsection{Toolchain}
+We use the authors' public flow (ETHZ-DYNAMO/OptiPIM, commit 9be8f9a),
+forked into our group repository. The flow has three parts: \texttt{pim-opt},
+an MLIR pass built on LLVM (commit 39048b69) that reads one layer in the
+\texttt{linalg} dialect, builds the integer linear program (ILP) of the paper,
+calls Gurobi and writes the resulting mapping as a trace file; a Python
+analytical model (\texttt{validation/analytical\_modeling}) that scores a trace
+with the paper's cost model (Eq.~17--20); and a modified Ramulator2 that
+replays a trace with PIM commands and reports \texttt{memory\_system\_cycles}.
+
+We built the flow on Ubuntu 22.04 under WSL2 on a Windows laptop
+(\fillin{CPU, cores and RAM given to WSL}). Building LLVM, \texttt{pim-opt} and
+the simulator took \fillin{hours}. We used Gurobi 13.0.3 with a free academic
+licence, while the paper used 11.0.3. The repository's CMake module only
+searches for Gurobi 11.0 and 12.0, so we exposed the 13.0 library under the
+12.0 name; no source code was changed. A Dockerfile in the repository
+reproduces the same build for members on macOS.
+
+\subsection{Operators and targets}
+Following the reduced scope, we map five single operators rather than full
+networks (Table~\ref{tab:ops}): three 2D convolutions from ResNet-50 and two
+matrix multiplications from BERT, taken from the layer files shipped in
+\texttt{nn\_models/} with the number of banks set to 32. C1 is the ResNet-50
+layer the paper analyses in its Fig.~12. Each operator is mapped onto two
+targets: HBM-PIM (\texttt{--target-device-type 1}, arch file
+\texttt{data/hbm\_pim.json}) and SIMDRAM (\texttt{--target-device-type 0},
+\texttt{data/dram.json}), both with 16-bit values.
+
+\begin{table}[t]
+\centering
+\caption{Operators used in our evaluation}
+\label{tab:ops}
+\footnotesize
+\begin{tabular}{lll}
+\hline
+ID & Source layer & Shape \\
+\hline
+C1 & ResNet-50 conv12 & $3{\times}3$, 128$\to$128 ch., 28$\times$28 out, stride 2 \\
+C2 & ResNet-50 conv2  & $3{\times}3$, 64$\to$64 ch., 56$\times$56 \\
+C3 & ResNet-50 conv1  & $1{\times}1$, 64$\to$64 ch., 56$\times$56 \\
+M1 & BERT fc0         & GEMM $128{\times}768{\times}768$ \\
+M2 & BERT fc1         & batched GEMM $12{\times}128{\times}64{\times}128$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{ILP configuration}
+All runs use the paper's full method: flexible indexing
+(\texttt{--trans-coeff-method 4}), the paper's input-counting estimate
+(Eq.~11, \texttt{--number-counting-method 0}) and the PIM cost objective
+(\texttt{--obj-method 0}). One script, \texttt{group12/scripts/run\_all.sh},
+solves all ten operator--target pairs, stores each mapping and the full
+Gurobi log, and records the wall-clock and Gurobi solve times
+(Table~\ref{tab:solve}). Solving took between \fillin{min} and \fillin{max}
+seconds per operator, compared with 1--209~s reported by the paper on a
+16-core server. A rerun from a fresh clone of the repository produced
+\fillin{identical mappings / mappings with identical objective values}.
+
+\begin{table}[t]
+\centering
+\caption{OptiPIM solve time per operator (seconds)}
+\label{tab:solve}
+\begin{tabular}{lrr}
+\hline
+Operator & HBM-PIM & SIMDRAM \\
+\hline
+C1 & \fillin{} & \fillin{} \\
+C2 & \fillin{} & \fillin{} \\
+C3 & \fillin{} & \fillin{} \\
+M1 & \fillin{} & \fillin{} \\
+M2 & \fillin{} & \fillin{} \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Limitations of Our Setup}
+\label{sec:limits}
+\begin{itemize}
+\item \textbf{No real hardware.} All cycle counts come from the analytical
+model and the authors' Ramulator2-based simulator, which model HBM-PIM and
+SIMDRAM timing but not every effect of a real chip.
+\item \textbf{Different solver version and machine.} We used Gurobi 13.0.3 on
+a laptop instead of 11.0.3 on a 16-core server, so absolute solve times are
+not comparable, and an ILP with several optimal solutions may return a
+different mapping with the same cost.
+\item \textbf{Five operators, one bank count.} We evaluate five single layers
+at 32 banks and 16-bit precision only; the paper sweeps whole networks and
+several memory sizes.
+\item \textbf{Our own heuristic.} The weight-parallel baseline is our
+reimplementation from the paper's description (Sec.~6.4.1), checked against
+the heuristic trace files the authors ship, not the authors' original code.
+\item \textbf{Arch file choice.} The authors' scripts use
+\texttt{data/hbm\_pim.json} in one place and \texttt{data/dram.json} in
+another for SIMDRAM; we use \texttt{dram.json}, as in their validation script.
+\end{itemize}
+
+\section*{What We Left Out}
+\begin{table}[h]
+\centering
+\caption{Parts of the paper left out and what we used instead}
+\label{tab:leftout}
+\begin{tabular}{p{0.38\columnwidth}p{0.5\columnwidth}}
+\hline
+Paper & Our setup \\
+\hline
+Real-hardware measurements & Analytical model and Ramulator2 simulator \\
+PIM-DL genetic-search baseline & Weight-parallel heuristic only \\
+Full networks (AlexNet, ResNet, VGG, UNet, BERT, Llama) & Five single operators from ResNet-50 and BERT \\
+Memory scalability study (bank sweep) & 32 banks only \\
+PyTorch $\to$ Torch-MLIR front end & The authors' shipped \texttt{.linalg.mlir} layer files \\
+\hline
+\end{tabular}
+\end{table}
+
+% Contribution statement line for Member 1:
+% \textbf{\fillin{Name}} (Member 1) built the toolchain and Gurobi setup, wrote
+% the scripts that solve all operators and log solve times, the Dockerfile
+% and build instructions, and wrote the setup and limitations sections.

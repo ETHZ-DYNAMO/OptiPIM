@@ -1,0 +1,244 @@
+Set parameter Username
+Set parameter LicenseID to value 2876265
+Set parameter Presolve to value 0
+Read parameters from file gurobi.env
+Set parameter TimeLimit to value 400
+Set parameter MIPFocus to value 1
+Set parameter NumericFocus to value 3
+Academic license - for non-commercial use only - expires 2027-10-19
+Warning: variable name "[Op_0] tmpNum_Mul_Col_Var_0" has a space
+Warning: constraint name "[Op] numChan_lower" has a space
+Warning: Q constraint 47 doesn't have a name
+Warning: to let Gurobi read it back, use rlp format
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (linux64 - "Ubuntu 22.04.5 LTS")
+
+CPU model: 13th Gen Intel(R) Core(TM) i5-13420H, instruction set [SSE2|AVX|AVX2]
+Thread count: 3 physical cores, 6 logical processors, using up to 6 threads
+
+Non-default parameters:
+TimeLimit  400
+MIPFocus  1
+NumericFocus  3
+Presolve  0
+
+Optimize a model with 74 rows, 260 columns and 520 nonzeros (Min)
+Model fingerprint: 0x42208841
+Model has 4 linear objective coefficients
+Model has 65 quadratic constraints
+Model has 2 simple general constraints
+  2 MIN
+Variable types: 8 continuous, 252 integer (161 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+02]
+  QMatrix range    [6e-02, 1e+00]
+  QLMatrix range   [1e+00, 2e+01]
+  Objective range  [1e+00, 2e+01]
+  Bounds range     [1e+00, 1e+16]
+  RHS range        [1e+00, 8e+03]
+  QRHS range       [1e+00, 1e+00]
+Warning: Model contains large bounds
+
+Warning: Model contains variables with very large bounds participating
+         in product terms.
+         Consider bounding these variables or reformulating the model.
+
+
+Solving non-convex MIQCP to global optimality
+
+Variable types: 7 continuous, 274 integer (163 binary)
+
+Root relaxation: objective 3.520241e+01, 166 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   35.20241    0   69          -   35.20241      -     -    0s
+     0     0   35.20241    0   69          -   35.20241      -     -    0s
+     0     0   35.20241    0   69          -   35.20241      -     -    0s
+H    0     0                    2051238.0000   35.20241   100%     -    0s
+     0     2   39.92869    0   69 2051238.00   39.92869   100%     -    0s
+H   45    43                    392336.00000   50.99185   100%   7.2    0s
+H 1131   634                    364316.00000  148.67436   100%   8.1    0s
+ 33033  9536 infeasible   26      364316.000  566.18387   100%   8.6    5s
+ 70751 16058 5398.06008   30   77 364316.000 1019.92309   100%   8.5   10s
+ 104763 23154 infeasible   50      364316.000 1504.56130   100%   8.6   15s
+ 136994 29356 18148.1296   38   65 364316.000 1935.06034  99.5%   8.8   20s
+ 170380 34573 7181.57105   20   67 364316.000 2505.06134  99.3%   8.8   25s
+ 203073 39383 infeasible   62      364316.000 3183.15227  99.1%   8.8   30s
+ 235773 43921 23655.4206   37   63 364316.000 3962.05731  98.9%   8.8   35s
+ 269663 48459     cutoff   24      364316.000 4804.88935  98.7%   8.7   40s
+ 301060 52249 38799.5173   42   82 364316.000 5674.09553  98.4%   8.7   45s
+ 334722 56124 41374.6734   28   37 364316.000 6677.52513  98.2%   8.6   50s
+ 366763 59496 145785.979   45   20 364316.000 7772.33435  97.9%   8.6   55s
+ 399571 62238 infeasible   43      364316.000 9050.04555  97.5%   8.6   60s
+ 434000 65437 67383.5829   49   47 364316.000 10383.0555  97.1%   8.6   65s
+ 467100 68015 infeasible   46      364316.000 11727.1278  96.8%   8.5   70s
+ 497580 69993 278860.191   52   37 364316.000 13041.8640  96.4%   8.5   75s
+ 531980 71950 30249.4636   34   54 364316.000 14742.9131  96.0%   8.4   80s
+ 565643 73707 72994.5938   42   38 364316.000 16444.7429  95.5%   8.4   85s
+ 597904 74778 infeasible   41      364316.000 18277.6314  95.0%   8.3   90s
+ 632954 75650 173386.213   52   56 364316.000 20287.7483  94.4%   8.3   95s
+ 669019 76336 128621.915   43   33 364316.000 22628.1175  93.8%   8.2  100s
+ 702894 76792 128977.287   49   55 364316.000 24907.1469  93.2%   8.2  105s
+ 737995 76828 infeasible   37      364316.000 27389.8809  92.5%   8.1  110s
+ 773903 76418 infeasible   44      364316.000 30356.9278  91.7%   8.1  115s
+ 809504 75455 infeasible   52      364316.000 33510.0192  90.8%   8.0  120s
+ 846626 74312 154879.302   37   45 364316.000 36963.9238  89.9%   8.0  125s
+ 884415 72705 85176.0486   38   76 364316.000 40805.7769  88.8%   7.9  130s
+ 922263 70292     cutoff   48      364316.000 45121.3855  87.6%   7.9  135s
+ 959590 67378 66795.7458   42   46 364316.000 50014.5071  86.3%   7.8  140s
+ 998073 64109 infeasible   35      364316.000 55505.6684  84.8%   7.8  145s
+ 1036840 60261 221225.038   39   36 364316.000 61818.7930  83.0%   7.7  150s
+ 1076508 55459 110700.904   44   53 364316.000 69423.2406  80.9%   7.6  155s
+ 1117126 49764 78976.0625   38   29 364316.000 78459.7500  78.5%   7.6  160s
+ 1159306 42480 204470.000   44   20 364316.000 90261.5000  75.2%   7.5  165s
+ 1202020 33907 infeasible   50      364316.000 105648.724  71.0%   7.4  170s
+ 1246808 21917 165676.000   44   41 364316.000 132187.847  63.7%   7.3  175s
+ 1296281  5139 infeasible   57      364316.000 212940.218  41.6%   7.2  180s
+
+Explored 1308968 nodes (9312932 simplex iterations) in 180.98 seconds (122.31 work units)
+Thread count was 6 (of 6 available processors)
+
+Solution count 3: 364316 392336 2.05124e+06 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.643160000000e+05, best bound 3.643160000000e+05, gap 0.0000%
+[Debug] arch and knob paths: ./data/hbm_pim.json ./data/knobs.json
+Successfully loaded tuning knob file ./data/knobs.json
+    Knobs:
+        accTolerance: 0.02
+        colMulWeight: 1
+        colAddWeight: 1
+        outTransWeight: 1
+        inLoadingWeight: 1
+        interOpTransWeight: 15
+Successfully loaded architecture file ./data/hbm_pim.json
+    ArchInfo:
+        dataWidth: 16 bits/element
+        numRow: 8192
+        numCol: 8192
+        PEBandWidth: 256 bits/cycle
+        SysBandWidth: 256 bits/cycle
+        mulLat: 44825 cycles
+        addLat: 2025 cycles
+        rowAct: 15 cycles
+        interColTransLat: 5 s
+        interPETransLat: 5
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Output Height(Q): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Input Channel(C): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Filter Width(R): 3
+		Div Vector: [ 1 3 ];
+	Filter Height(S): 3
+		Div Vector: [ 1 3 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 16
+		Q_S_LUT LUT Size: 16
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Output Height(Q): 56
+		Div Vector: [ 1 2 4 7 8 14 28 56 ];
+	Input Channel(C): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Filter Width(R): 3
+		Div Vector: [ 1 3 ];
+	Filter Height(S): 3
+		Div Vector: [ 1 3 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 16
+		Q_S_LUT LUT Size: 16
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+
+
+[OPTIMIZED OPERATOR RESULTS]
+	Op ID: 0; Type: Conv2D; Target Device: Process-near-memory device;
+	[Level 0 (Inner Most)]:
+		N: 1
+		K: 64
+		P: 2
+		Q: 7
+		C: 1
+		R: 3
+		S: 3
+	[Level 1]:
+		N: 1
+		K: 1
+		P: 7
+		Q: 8
+		C: 8
+		R: 1
+		S: 1
+	[Level 2 (Outter Most)]:
+		N: 1
+		K: 1
+		P: 4
+		Q: 1
+		C: 8
+		R: 1
+		S: 1
+	[Transformation Coefficients]:
+		Conv2D_P: 1
+			Trans Comb 2 selected;
+		Conv2D_R: 1
+			Trans Comb 2 selected;
+		Conv2D_Q: 1
+			Trans Comb 2 selected;
+		Conv2D_S: 1
+			Trans Comb 2 selected;
+		P_R_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+		Q_S_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+	[Perfromance modeling Variables]:
+		PRGCDValue: 1.000000e+00
+ 		QSGCDValue: 1.000000e+00
+
+ 		NumMulCol: 8064
+ 		numOutCol: 896
+ 		numFilCol: 576
+ 		numInCol: 36
+ 		numInTerm2Col: 4
+ 		numInTerm3Col: 9
+ 		numRedOutCol: 8
+ 		numRedCol: 7168
+ 		numColPE: 448
+ 		numOutPE: 401408
+ 		numInPE: 16128
+ 		numPESys: 32
+ 		numOutSys: 2.867200e+04
+ 		numInSys: 5.160960e+05
+ 		numChannelsSys: 2
+ 		channelLevelBandwidth: 5.120000e+02
+ 		finalOutCostVar: 8.960000e+02
+ 		finalInCostVar: 1.666800e+04
+ 		numFilLoading: 2.257920e+05
+ 	[Analytical Perforamnce Modeling Result]:
+		 Real Cost: 7.792000e+05
