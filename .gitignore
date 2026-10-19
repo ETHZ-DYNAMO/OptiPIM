@@ -53,4 +53,10 @@ Debug
 # exp_results
 *llm_exp
 traces0/
-traces1/
+traces1/llvm-project/
+build/
+optipim_env/
+simulator/build/
+*.log
+Debug/
+Result/

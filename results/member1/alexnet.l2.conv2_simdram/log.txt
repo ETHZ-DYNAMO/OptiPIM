@@ -1,0 +1,209 @@
+Set parameter Username
+Set parameter LicenseID to value 2876265
+Set parameter TimeLimit to value 400
+Set parameter MIPFocus to value 1
+Set parameter NumericFocus to value 3
+Academic license - for non-commercial use only - expires 2027-10-19
+Warning: variable name "[Op_0] tmpNum_Mul_Col_Var_0" has a space
+Warning: constraint name "[Op] numChan_lower" has a space
+Warning: Q constraint 47 doesn't have a name
+Warning: to let Gurobi read it back, use rlp format
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (linux64 - "Ubuntu 22.04.5 LTS")
+
+CPU model: 13th Gen Intel(R) Core(TM) i5-13420H, instruction set [SSE2|AVX|AVX2]
+Thread count: 3 physical cores, 6 logical processors, using up to 6 threads
+
+Non-default parameters:
+TimeLimit  400
+MIPFocus  1
+NumericFocus  3
+
+Optimize a model with 74 rows, 247 columns and 460 nonzeros (Min)
+Model fingerprint: 0x9999a76f
+Model has 4 linear objective coefficients
+Model has 64 quadratic constraints
+Model has 2 simple general constraints
+  2 MIN
+Variable types: 7 continuous, 240 integer (149 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+02]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 2e+01]
+  Objective range  [1e+00, 5e+04]
+  Bounds range     [1e+00, 1e+16]
+  RHS range        [1e+00, 8e+03]
+  QRHS range       [1e+00, 1e+00]
+Warning: Model contains large bounds
+
+Presolve added 13 rows and 0 columns
+Presolve removed 0 rows and 65 columns
+Presolve time: 0.01s
+Presolved: 238 rows, 202 columns, 867 nonzeros
+Presolved model has 6 SOS constraint(s)
+Presolved model has 27 bilinear constraint(s)
+Warning: Model contains variables with very large bounds participating
+         in product terms.
+         Presolve was not able to compute smaller bounds for these variables.
+         Consider bounding these variables or reformulating the model.
+
+
+Solving non-convex MIQCP to global optimality
+
+Variable types: 3 continuous, 199 integer (109 binary)
+
+Root relaxation: objective 5.589803e+04, 152 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 55898.0334    0   66          - 55898.0334      -     -    0s
+     0     0 55898.0334    0   66          - 55898.0334      -     -    0s
+H    0     0                    4.930672e+07 55898.0334   100%     -    0s
+     0     2 55925.0959    0   61 4.9307e+07 55925.0959   100%     -    0s
+*  199   129              16    4.824921e+07 96860.5424   100%   6.3    0s
+
+Explored 3919 nodes (20068 simplex iterations) in 1.04 seconds (0.52 work units)
+Thread count was 6 (of 6 available processors)
+
+Solution count 2: 4.82492e+07 4.93067e+07 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.824920700000e+07, best bound 4.824920700000e+07, gap 0.0000%
+[Debug] arch and knob paths: ./data/dram.json ./data/knobs.json
+Successfully loaded tuning knob file ./data/knobs.json
+    Knobs:
+        accTolerance: 0.02
+        colMulWeight: 1
+        colAddWeight: 1
+        outTransWeight: 1
+        inLoadingWeight: 1
+        interOpTransWeight: 15
+Successfully loaded architecture file ./data/dram.json
+    ArchInfo:
+        dataWidth: 16 bits/element
+        numRow: 8192
+        numCol: 8192
+        PEBandWidth: 256 bits/cycle
+        SysBandWidth: 256 bits/cycle
+        mulLat: 48411 cycles
+        addLat: 2187 cycles
+        rowAct: 27 cycles
+        interColTransLat: 5 s
+        interPETransLat: 5
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 384
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 384 ];
+	Output Width(P): 13
+		Div Vector: [ 1 13 ];
+	Output Height(Q): 13
+		Div Vector: [ 1 13 ];
+	Input Channel(C): 192
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 192 ];
+	Filter Width(R): 3
+		Div Vector: [ 1 3 ];
+	Filter Height(S): 3
+		Div Vector: [ 1 3 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 4
+		Q_S_LUT LUT Size: 4
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 384
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 384 ];
+	Output Width(P): 13
+		Div Vector: [ 1 13 ];
+	Output Height(Q): 13
+		Div Vector: [ 1 13 ];
+	Input Channel(C): 192
+		Div Vector: [ 1 2 3 4 6 8 12 16 24 32 48 64 96 192 ];
+	Filter Width(R): 3
+		Div Vector: [ 1 3 ];
+	Filter Height(S): 3
+		Div Vector: [ 1 3 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 4
+		Q_S_LUT LUT Size: 4
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 ]
+		Q_S_LUT[1 1 1 1 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 0
+		Q_S_LUT Flag: 0
+
+
+[OPTIMIZED OPERATOR RESULTS]
+	Op ID: 0; Type: Conv2D; Target Device: Process-using-memory device;
+	[Level 0 (Inner Most)]:
+		N: 1
+		K: 8
+		P: 13
+		Q: 1
+		C: 1
+		R: 3
+		S: 3
+	[Level 1]:
+		N: 1
+		K: 3
+		P: 1
+		Q: 13
+		C: 192
+		R: 1
+		S: 1
+	[Level 2 (Outter Most)]:
+		N: 1
+		K: 16
+		P: 1
+		Q: 1
+		C: 1
+		R: 1
+		S: 1
+	[Transformation Coefficients]:
+		Conv2D_P: 1
+			Trans Comb 5 selected;
+		Conv2D_R: 1
+			Trans Comb 0 selected;
+		Conv2D_Q: 13
+			Trans Comb 5 selected;
+		Conv2D_S: 1
+			Trans Comb 1 selected;
+		P_R_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+		Q_S_LUT selected pair: (13, 1)
+			Corresponding GCD Value: 1; Idx: 2
+	[Perfromance modeling Variables]:
+		PRGCDValue: 1.000000e+00
+ 		QSGCDValue: 1.000000e+00
+
+ 		NumMulCol: 936
+ 		numOutCol: 104
+ 		numFilCol: 72
+ 		numInCol: 45
+ 		numInTerm2Col: 15
+ 		numInTerm3Col: 3
+ 		numRedOutCol: 8
+ 		numRedCol: 832
+ 		numColPE: 7488
+ 		numOutPE: 778752
+ 		numInPE: 336960
+ 		numPESys: 16
+ 		numOutSys: 1.246003e+07
+ 		numInSys: 5.391360e+06
+ 		numChannelsSys: 1
+ 		channelLevelBandwidth: 2.560000e+02
+ 		finalOutCostVar: 7.787520e+05
+ 		finalInCostVar: 3.381750e+05
+ 	[Analytical Perforamnce Modeling Result]:
+		 Real Cost: 6.498367e+07

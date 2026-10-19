@@ -1,0 +1,212 @@
+Set parameter Username
+Set parameter LicenseID to value 2876265
+Set parameter TimeLimit to value 400
+Set parameter MIPFocus to value 1
+Set parameter NumericFocus to value 3
+Academic license - for non-commercial use only - expires 2027-10-19
+Warning: variable name "[Op_0] tmpNum_Mul_Col_Var_0" has a space
+Warning: constraint name "[Op] numChan_lower" has a space
+Warning: Q constraint 47 doesn't have a name
+Warning: to let Gurobi read it back, use rlp format
+Gurobi Optimizer version 13.0.3 build v13.0.3rc0 (linux64 - "Ubuntu 22.04.5 LTS")
+
+CPU model: 13th Gen Intel(R) Core(TM) i5-13420H, instruction set [SSE2|AVX|AVX2]
+Thread count: 3 physical cores, 6 logical processors, using up to 6 threads
+
+Non-default parameters:
+TimeLimit  400
+MIPFocus  1
+NumericFocus  3
+
+Optimize a model with 74 rows, 204 columns and 339 nonzeros (Min)
+Model fingerprint: 0x725f7573
+Model has 4 linear objective coefficients
+Model has 64 quadratic constraints
+Model has 2 simple general constraints
+  2 MIN
+Variable types: 7 continuous, 197 integer (106 binary)
+Coefficient statistics:
+  Matrix range     [9e-02, 3e+02]
+  QMatrix range    [1e+00, 1e+00]
+  QLMatrix range   [1e+00, 2e+01]
+  Objective range  [1e+00, 5e+04]
+  Bounds range     [1e+00, 5e+15]
+  RHS range        [1e+00, 8e+03]
+  QRHS range       [1e+00, 1e+00]
+Warning: Model contains large bounds
+
+Presolve added 2 rows and 0 columns
+Presolve removed 0 rows and 46 columns
+Presolve time: 0.03s
+Presolved: 263 rows, 181 columns, 846 nonzeros
+Presolved model has 7 SOS constraint(s)
+Presolved model has 33 bilinear constraint(s)
+Warning: Model contains variables with very large bounds participating
+         in product terms.
+         Presolve was not able to compute smaller bounds for these variables.
+         Consider bounding these variables or reformulating the model.
+
+
+Solving non-convex MIQCP to global optimality
+
+Variable types: 5 continuous, 176 integer (79 binary)
+
+Root relaxation: objective 5.020401e+04, 111 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 50204.0134    0   67          - 50204.0134      -     -    0s
+     0     0 50204.0134    0   67          - 50204.0134      -     -    0s
+H    0     0                    6.812672e+07 50204.0134   100%     -    0s
+     0     2 50231.0759    0   67 6.8127e+07 50231.0759   100%     -    0s
+H    5     7                    6.184142e+07 96853.9418   100%   5.2    0s
+H   66    53                    3.322192e+07 96856.0946   100%  10.5    0s
+*   93    66              20    3.165594e+07 96962.0515   100%   8.9    0s
+H  602    21                    2.871982e+07 2856948.00  90.1%   5.7    0s
+
+Explored 682 nodes (3726 simplex iterations) in 0.33 seconds (0.13 work units)
+Thread count was 6 (of 6 available processors)
+
+Solution count 5: 2.87198e+07 3.16559e+07 3.32219e+07 ... 6.81267e+07
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.871982500000e+07, best bound 2.871982500000e+07, gap 0.0000%
+[Debug] arch and knob paths: ./data/dram.json ./data/knobs.json
+Successfully loaded tuning knob file ./data/knobs.json
+    Knobs:
+        accTolerance: 0.02
+        colMulWeight: 1
+        colAddWeight: 1
+        outTransWeight: 1
+        inLoadingWeight: 1
+        interOpTransWeight: 15
+Successfully loaded architecture file ./data/dram.json
+    ArchInfo:
+        dataWidth: 16 bits/element
+        numRow: 8192
+        numCol: 8192
+        PEBandWidth: 256 bits/cycle
+        SysBandWidth: 256 bits/cycle
+        mulLat: 48411 cycles
+        addLat: 2187 cycles
+        rowAct: 27 cycles
+        interColTransLat: 5 s
+        interPETransLat: 5
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 55
+		Div Vector: [ 1 5 11 55 ];
+	Output Height(Q): 55
+		Div Vector: [ 1 5 11 55 ];
+	Input Channel(C): 3
+		Div Vector: [ 1 3 ];
+	Filter Width(R): 11
+		Div Vector: [ 1 11 ];
+	Filter Height(S): 11
+		Div Vector: [ 1 11 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 8
+		Q_S_LUT LUT Size: 8
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 11 1 11 ]
+		Q_S_LUT[1 1 1 1 1 11 1 11 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 1
+		Q_S_LUT Flag: 1
+Op ID: 0
+	[OP LOOP BOUNDS INFO]
+	Batch Size(N): 1
+		Div Vector: [ 1 ];
+	Output Channel(K): 64
+		Div Vector: [ 1 2 4 8 16 32 64 ];
+	Output Width(P): 55
+		Div Vector: [ 1 5 11 55 ];
+	Output Height(Q): 55
+		Div Vector: [ 1 5 11 55 ];
+	Input Channel(C): 3
+		Div Vector: [ 1 3 ];
+	Filter Width(R): 11
+		Div Vector: [ 1 11 ];
+	Filter Height(S): 11
+		Div Vector: [ 1 11 ];
+
+	[LOOK UP TABLE SIZE]
+		P_R_LUT LUT Size: 8
+		Q_S_LUT LUT Size: 8
+	[LOOK UP TABLE CONTENTS]
+		P_R_LUT[1 1 1 1 1 11 1 11 ]
+		Q_S_LUT[1 1 1 1 1 11 1 11 ]
+	[NEED LOOK UP TABLE FLAGS]
+		P_R_LUT Flag: 1
+		Q_S_LUT Flag: 1
+
+
+[OPTIMIZED OPERATOR RESULTS]
+	Op ID: 0; Type: Conv2D; Target Device: Process-using-memory device;
+	[Level 0 (Inner Most)]:
+		N: 1
+		K: 2
+		P: 5
+		Q: 5
+		C: 1
+		R: 11
+		S: 1
+	[Level 1]:
+		N: 1
+		K: 2
+		P: 11
+		Q: 11
+		C: 3
+		R: 1
+		S: 11
+	[Level 2 (Outter Most)]:
+		N: 1
+		K: 16
+		P: 1
+		Q: 1
+		C: 1
+		R: 1
+		S: 1
+	[Transformation Coefficients]:
+		Conv2D_P: 1
+			Trans Comb 3 selected;
+		Conv2D_R: 1
+			Trans Comb 2 selected;
+		Conv2D_Q: 11
+			Trans Comb 5 selected;
+		Conv2D_S: 11
+			Trans Comb 0 selected;
+		P_R_LUT selected pair: (1, 1)
+			Corresponding GCD Value: 1; Idx: 0
+		Q_S_LUT selected pair: (11, 11)
+			Corresponding GCD Value: 11; Idx: 5
+	[Perfromance modeling Variables]:
+		PRGCDValue: 1.000000e+00
+ 		QSGCDValue: 9.090909e-02
+
+ 		NumMulCol: 550
+ 		numOutCol: 50
+ 		numFilCol: 22
+ 		numInCol: 75
+ 		numInTerm2Col: 15
+ 		numInTerm3Col: 5
+ 		numRedOutCol: 10
+ 		numRedCol: 500
+ 		numColPE: 7986
+ 		numOutPE: 399300
+ 		numInPE: 598950
+ 		numPESys: 16
+ 		numOutSys: 6.388800e+06
+ 		numInSys: 9.583200e+06
+ 		numChannelsSys: 1
+ 		channelLevelBandwidth: 2.560000e+02
+ 		finalOutCostVar: 3.993000e+05
+ 		finalInCostVar: 6.009750e+05
+ 	[Analytical Perforamnce Modeling Result]:
+		 Real Cost: 4.369155e+07

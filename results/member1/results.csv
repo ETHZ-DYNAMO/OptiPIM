@@ -1,0 +1,7 @@
+layer,device,real_cost,solver_seconds
+alexnet.l0.conv0,simdram,4.369155e+07,0
+alexnet.l0.conv0,hbmpim,1.070960e+06,1
+alexnet.l2.conv2,simdram,6.498367e+07,1
+alexnet.l2.conv2,hbmpim,8.189120e+05,2
+alexnet.l5.fc0,simdram,1.567759e+07,0
+alexnet.l5.fc0,hbmpim,2.293760e+05,1
