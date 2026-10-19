@@ -1,0 +1,6 @@
+trace,target,finalPerformance,inLoadingCost,numColPE,numFilCol,numFilPELoading,numInCol,numInPE,numInSys,numMulCol,numOutCol,numOutPE,numOutSys,numPESys,numRedCol,numRedOutCol,outTransCost
+group12/mappings/simdram/C1/optipim.trace,simdram,24995102.0,1985731.0,8192,9,0,121,991232,31719424,441,49,401408,12845056,32,392,8,802816.0
+group12/mappings/simdram/C2/optipim.trace,simdram,24338662.0,1329291.0,8192,9,0,81,663552,21233664,441,49,401408,12845056,32,392,8,802816.0
+group12/mappings/simdram/C3/optipim.trace,simdram,3575824.0,402164.0,7168,4,0,28,200704,6422528,56,28,200704,6422528,32,28,1,401408.0
+group12/mappings/simdram/M1/optipim.trace,simdram,15443838.0,786432.0,8192,288,0,48,393216,12582912,288,6,49152,1572864,32,282,47,98304.0
+group12/mappings/simdram/M2/optipim.trace,simdram,3257727.0,786432.0,8192,48,0,48,393216,12582912,48,3,24576,786432,32,45,15,49152.0
